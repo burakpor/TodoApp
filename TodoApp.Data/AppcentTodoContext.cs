@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TodoApp.Data.Entity;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace TodoApp.Data
+namespace TodoApp.Data.Entity
 {
     public partial class AppcentTodoContext : DbContext
     {
@@ -89,7 +90,7 @@ namespace TodoApp.Data
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.AcTasks)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__AcTask__UserId__46E78A0C");
+                    .HasConstraintName("FK_AcTask_AcUser");
             });
 
             modelBuilder.Entity<AcTaskActivity>(entity =>
@@ -174,7 +175,7 @@ namespace TodoApp.Data
             modelBuilder.Entity<AcUser>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__Users__3214EC07EC4857A5");
+                    .HasName("PK__AcUser__1788CC4CC459953C");
 
                 entity.ToTable("AcUser");
 
@@ -193,6 +194,10 @@ namespace TodoApp.Data
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                entity.Property(e => e.Salt)
                     .IsRequired()
                     .HasMaxLength(100);
 

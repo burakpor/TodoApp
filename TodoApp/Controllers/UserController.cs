@@ -1,10 +1,11 @@
 ﻿using Autofac;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using TodoApp.Commands.SigningCommands;
+using TodoApp.Helpers;
 using TodoApp.Models.BusinessModels;
+using TodoApp.Models.Dtos;
 
 namespace TodoApp.Controllers
 {
@@ -12,15 +13,25 @@ namespace TodoApp.Controllers
     [Route("api/[controller]")]
     public class UserController : BaseApiController
     {
-        public UserController(IComponentContext icocontext) : base(icocontext)
+        private readonly IMapper _mapper;
+        public UserController(IComponentContext icocontext, IMapper mapper) : base(icocontext)
         {
+            _mapper = mapper;
         }
 
         [HttpPost]
-        public ActionResult Register([FromBody]RegisterUserRequest request)
+        public async Task<ActionResult> RegisterAsync([FromBody] RegisterUserDto viewRequest)
         {
+            if (!TryValidateModel(viewRequest))
+            {
+                return BadRequest(ValidationHelper.GetModelErrors(ModelState));
+            }
 
-            return Ok();
+            var request = this._mapper.Map<RegisterUserRequest>(viewRequest);
+            var command = new RegisterUserCommand {
+                Data = request
+            };
+            return await Go(command);
         }
     }
 }

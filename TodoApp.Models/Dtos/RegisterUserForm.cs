@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TodoApp.Models.ViewModels
+namespace TodoApp.Models.Dtos
 {
-    public class RegisterUserForm
+    public class RegisterUserDto
     {
         [Required]
         public string UserName { get; set; }

@@ -19,6 +19,7 @@ namespace TodoApp.Data.Entity
         public DateTime CreateDate { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Salt { get; set; }
 
         public virtual ICollection<AcTask> AcTasks { get; set; }
     }
