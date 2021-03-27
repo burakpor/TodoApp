@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoApp.Entity;
 
-namespace TodoApp
+namespace TodoApp.Data
 {
     public partial class AppcentTodoContext : DbContext
     {

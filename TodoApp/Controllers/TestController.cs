@@ -1,27 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Autofac;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using TodoApp;
+using TodoApp.Commands.SigningCommands;
+using TodoApp.Models.BusinessModels;
 
 namespace TodoApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TestController : ControllerBase
+    public class TestController : BaseApiController
     {
-        private readonly AppcentTodoContext context;
-
-        public TestController(AppcentTodoContext _context)
+        public TestController(IComponentContext icocontext): base(icocontext)
         {
-            context = _context;
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public async Task<ActionResult> GetAsync()
         {
             try
             {
-                return Ok(context.TestTable.FirstOrDefault(a => a.Id == 1)?.Id);
+                var command = new RegisterUserCommand();
+                command.Data = new RegisterUserRequest { UserName = "burakpo",Password ="password",Email = "email@email.com" };
+                var response = await Go(command);
+                return response;
+                //return Ok(context.TestTable.FirstOrDefault(a => a.Id == 1)?.Id);
             }
             catch (Exception ex)
             {

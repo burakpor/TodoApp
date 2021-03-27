@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +8,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TodoApp.Models.BusinessModels;
 using Microsoft.EntityFrameworkCore;
+using TodoApp.Data;
+using System.Text.Json;
+
 namespace TodoApp
 {
     public class Startup
@@ -58,6 +59,11 @@ namespace TodoApp
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
+            });
+
+            services.AddMvcCore().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
         }
 
