@@ -16,7 +16,7 @@ namespace TodoApp.CommandHandlers.SigingCommandHandlers
         {
             if (command != null)
             {
-                var a = context.TestTable.FirstOrDefault(x => x.Id == 1)?.Id;
+                var a = context.TestTables.FirstOrDefault(x => x.Id == 1)?.Id;
                 var test = command.Data;
             }
 

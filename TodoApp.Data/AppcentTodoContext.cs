@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TodoApp.Entity;
+using TodoApp.Data.Entity;
+
+#nullable disable
 
 namespace TodoApp.Data
 {
@@ -14,20 +16,21 @@ namespace TodoApp.Data
         {
         }
 
-        public virtual DbSet<AcCategory> AcCategory { get; set; }
-        public virtual DbSet<AcTask> AcTask { get; set; }
-        public virtual DbSet<AcTaskActivity> AcTaskActivitiy { get; set; }
-        public virtual DbSet<AcTaskComment> AcTaskComment { get; set; }
-        public virtual DbSet<AcTaskLabel> AcTaskLabel { get; set; }
-        public virtual DbSet<AcTaskPriority> AcTaskPriority { get; set; }
-        public virtual DbSet<AcTaskStatus> AcTaskStatus { get; set; }
-        public virtual DbSet<AcUser> AcUser { get; set; }
-        public virtual DbSet<TestTable> TestTable { get; set; }
+        public virtual DbSet<AcCategory> AcCategories { get; set; }
+        public virtual DbSet<AcTask> AcTasks { get; set; }
+        public virtual DbSet<AcTaskActivity> AcTaskActivities { get; set; }
+        public virtual DbSet<AcTaskComment> AcTaskComments { get; set; }
+        public virtual DbSet<AcTaskLabel> AcTaskLabels { get; set; }
+        public virtual DbSet<AcTaskPriority> AcTaskPriorities { get; set; }
+        public virtual DbSet<AcTaskStatus> AcTaskStatuses { get; set; }
+        public virtual DbSet<AcUser> AcUsers { get; set; }
+        public virtual DbSet<TestTable> TestTables { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=35.234.83.227;Initial Catalog=AppcentTodo;User Id=sqlserver;Password=testdbpassword;Persist Security Info=True;MultipleActiveResultSets=True");
             }
         }
@@ -44,6 +47,8 @@ namespace TodoApp.Data
                 entity.ToTable("AcCategory");
 
                 entity.Property(e => e.CategoryName).HasMaxLength(50);
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
             });
 
             modelBuilder.Entity<AcTask>(entity =>
@@ -54,6 +59,8 @@ namespace TodoApp.Data
                 entity.ToTable("AcTask");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -115,6 +122,8 @@ namespace TodoApp.Data
                     .IsRequired()
                     .HasMaxLength(500);
 
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
                 entity.HasOne(d => d.Task)
                     .WithMany(p => p.AcTaskComments)
                     .HasForeignKey(d => d.TaskId)
@@ -127,6 +136,8 @@ namespace TodoApp.Data
                     .HasName("PK__AcTaskLa__1398190A8D9FD606");
 
                 entity.ToTable("AcTaskLabel");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Label).HasMaxLength(50);
 
@@ -172,6 +183,14 @@ namespace TodoApp.Data
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(100);
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.Password)
                     .IsRequired()

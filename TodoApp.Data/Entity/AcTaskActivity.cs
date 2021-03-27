@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace TodoApp.Entity
+namespace TodoApp.Data.Entity
 {
     public partial class AcTaskActivity
     {

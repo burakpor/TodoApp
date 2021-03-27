@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace TodoApp.Entity
+namespace TodoApp.Data.Entity
 {
     public partial class AcUser
     {
@@ -17,6 +17,8 @@ namespace TodoApp.Entity
         public string Password { get; set; }
         public string Email { get; set; }
         public DateTime CreateDate { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public virtual ICollection<AcTask> AcTasks { get; set; }
     }
