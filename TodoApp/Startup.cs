@@ -10,6 +10,8 @@ using TodoApp.Models.BusinessModels;
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Data;
 using System.Text.Json;
+using TodoApp.Models.Dtos;
+using TodoApp.Data.Entity;
 
 namespace TodoApp
 {
@@ -28,7 +30,10 @@ namespace TodoApp
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSwaggerGen();
-
+            services.AddAutoMapper(e => {
+                e.CreateMap<RegisterUserDto, RegisterUserRequest>();
+                e.CreateMap<RegisterUserRequest, AcUser>();
+            });
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
@@ -93,9 +98,9 @@ namespace TodoApp
             {
                 app.UseSpaStaticFiles();
             }
-
+            app.UseAuthentication();
             app.UseRouting();
-
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

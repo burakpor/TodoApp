@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace TodoApp.Entity
+namespace TodoApp.Data.Entity
 {
     public partial class AcCategory
     {
@@ -14,6 +14,7 @@ namespace TodoApp.Entity
 
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
+        public bool? IsDeleted { get; set; }
 
         public virtual ICollection<AcTask> AcTasks { get; set; }
     }

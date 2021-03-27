@@ -5,13 +5,15 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp", "TodoApp\TodoApp.csproj", "{D0071D71-172B-4306-BC23-A5814E91AE39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Data", "TodoApp.Data\TodoApp.Data.csproj", "{E202291E-9FE4-49D3-9FD0-6A76D2AC74E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Data", "TodoApp.Data\TodoApp.Data.csproj", "{E202291E-9FE4-49D3-9FD0-6A76D2AC74E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Models", "TodoApp.Models\TodoApp.Models.csproj", "{7B5443DF-8F2A-4EF5-9B46-6457BE81EF08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Models", "TodoApp.Models\TodoApp.Models.csproj", "{7B5443DF-8F2A-4EF5-9B46-6457BE81EF08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Commands", "TodoApp.Commands\TodoApp.Commands.csproj", "{D3126D36-94CE-4563-8C09-0B75662A2897}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Commands", "TodoApp.Commands\TodoApp.Commands.csproj", "{D3126D36-94CE-4563-8C09-0B75662A2897}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.CommandHandlers", "TodoApp.CommandHandlers\TodoApp.CommandHandlers.csproj", "{278B3EFA-9F38-47CF-833B-25C59EE8C294}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.CommandHandlers", "TodoApp.CommandHandlers\TodoApp.CommandHandlers.csproj", "{278B3EFA-9F38-47CF-833B-25C59EE8C294}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Core", "TodoApp.Core\TodoApp.Core.csproj", "{2C4677A8-B8F4-49E5-9F67-4FEA4F44B2BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{278B3EFA-9F38-47CF-833B-25C59EE8C294}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{278B3EFA-9F38-47CF-833B-25C59EE8C294}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{278B3EFA-9F38-47CF-833B-25C59EE8C294}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C4677A8-B8F4-49E5-9F67-4FEA4F44B2BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C4677A8-B8F4-49E5-9F67-4FEA4F44B2BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C4677A8-B8F4-49E5-9F67-4FEA4F44B2BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C4677A8-B8F4-49E5-9F67-4FEA4F44B2BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,6 +6,6 @@ namespace TodoApp.CommandHandlers
 {
     public interface ICommandHandler
     {
-        Task<ICommandResult> Execute(ICommand command);
+        Task<ResponseBase> Execute(ICommand command);
     }
 }
