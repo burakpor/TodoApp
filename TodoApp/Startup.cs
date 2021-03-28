@@ -12,6 +12,7 @@ using TodoApp.Data;
 using System.Text.Json;
 using TodoApp.Models.Dtos;
 using TodoApp.Data.Entity;
+using TodoApp.Helpers;
 
 namespace TodoApp
 {
@@ -30,10 +31,9 @@ namespace TodoApp
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSwaggerGen();
-            services.AddAutoMapper(e => {
-                e.CreateMap<RegisterUserDto, RegisterUserRequest>();
-                e.CreateMap<RegisterUserRequest, AcUser>();
-                e.CreateMap<UserLoginDto, UserLoginRequest>();
+            services.AddAutoMapper(e =>
+            {
+                e.AddProfile(new AutoMapperProfile());
             });
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -60,8 +60,7 @@ namespace TodoApp
             });
             //Register DBContext
             services.AddDbContext<AppcentTodoContext>(options =>
-                          options.UseSqlServer(
-                              Configuration.GetConnectionString("DefaultConnection")));
+                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";

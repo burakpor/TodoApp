@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Commands", "TodoApp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.CommandHandlers", "TodoApp.CommandHandlers\TodoApp.CommandHandlers.csproj", "{278B3EFA-9F38-47CF-833B-25C59EE8C294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Core", "TodoApp.Core\TodoApp.Core.csproj", "{2C4677A8-B8F4-49E5-9F67-4FEA4F44B2BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Core", "TodoApp.Core\TodoApp.Core.csproj", "{2C4677A8-B8F4-49E5-9F67-4FEA4F44B2BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Test", "TodoApp.Test\TodoApp.Test.csproj", "{79A0AB0B-0E1F-43AE-8CBB-6A7679250499}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{2C4677A8-B8F4-49E5-9F67-4FEA4F44B2BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C4677A8-B8F4-49E5-9F67-4FEA4F44B2BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C4677A8-B8F4-49E5-9F67-4FEA4F44B2BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79A0AB0B-0E1F-43AE-8CBB-6A7679250499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79A0AB0B-0E1F-43AE-8CBB-6A7679250499}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79A0AB0B-0E1F-43AE-8CBB-6A7679250499}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79A0AB0B-0E1F-43AE-8CBB-6A7679250499}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
