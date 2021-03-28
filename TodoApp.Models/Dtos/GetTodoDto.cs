@@ -2,7 +2,7 @@
 
 namespace TodoApp.Models.Dtos
 {
-    public class AddTodoDto
+    public class GetTodoDto
     {
     }
 }
