@@ -1,11 +1,8 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using TodoApp;
-using TodoApp.Commands.SigningCommands;
-using TodoApp.Models.BusinessModels;
 
 namespace TodoApp.Controllers
 {
@@ -18,15 +15,12 @@ namespace TodoApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> GetAsync()
         {
             try
             {
-                var command = new RegisterUserCommand();
-                command.Data = new RegisterUserRequest { UserName = "burakpo",Password ="password",Email = "email@email.com" };
-                var response = await Go(command);
-                return response;
-                //return Ok(context.TestTable.FirstOrDefault(a => a.Id == 1)?.Id);
+                return Ok("OK");
             }
             catch (Exception ex)
             {

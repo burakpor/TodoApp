@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using TodoApp.Commands;
 using TodoApp.Commands.SigningCommands;
 using TodoApp.Helpers;
 using TodoApp.Models.BusinessModels;
@@ -19,8 +20,8 @@ namespace TodoApp.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> RegisterAsync([FromBody] RegisterUserDto viewRequest)
+        [HttpPost(nameof(Register))]
+        public async Task<ActionResult> Register([FromBody] RegisterUserDto viewRequest)
         {
             if (!TryValidateModel(viewRequest))
             {
@@ -29,6 +30,22 @@ namespace TodoApp.Controllers
 
             var request = this._mapper.Map<RegisterUserRequest>(viewRequest);
             var command = new RegisterUserCommand {
+                Data = request
+            };
+            return await Go(command);
+        }
+
+        [HttpPost(nameof(Login))]
+        public async Task<ActionResult> Login([FromBody] UserLoginDto viewRequest)
+        {
+            if (!TryValidateModel(viewRequest))
+            {
+                return BadRequest(ValidationHelper.GetModelErrors(ModelState));
+            }
+
+            var request = this._mapper.Map<UserLoginRequest>(viewRequest);
+            var command = new UserLoginCommand
+            {
                 Data = request
             };
             return await Go(command);
