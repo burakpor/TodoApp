@@ -33,6 +33,7 @@ namespace TodoApp
             services.AddAutoMapper(e => {
                 e.CreateMap<RegisterUserDto, RegisterUserRequest>();
                 e.CreateMap<RegisterUserRequest, AcUser>();
+                e.CreateMap<UserLoginDto, UserLoginRequest>();
             });
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);

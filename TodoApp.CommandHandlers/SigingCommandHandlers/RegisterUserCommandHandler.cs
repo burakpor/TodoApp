@@ -3,48 +3,49 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoApp.Commands.SigningCommands;
-using TodoApp.Data;
 using TodoApp.Data.Entity;
 using TodoApp.Models.BusinessModels;
 using TodoApp.Core.Security;
+
 namespace TodoApp.CommandHandlers.SigingCommandHandlers
 {
     public class RegisterUserCommandHandler : CommandHandler<RegisterUserCommand, RegisterUserResponse>
     {
         private readonly AppcentTodoContext _context;
         private readonly IMapper _mapper;
-        public RegisterUserCommandHandler(AppcentTodoContext context, IMapper mapper) {
-            
+        public RegisterUserCommandHandler(AppcentTodoContext context, IMapper mapper)
+        {
+
             _context = context;
             _mapper = mapper;
         }
         protected override Task<RegisterUserResponse> ProcessCommand(RegisterUserCommand command)
         {
             var response = new RegisterUserResponse();
-            if (command != null)
-            {
-                var entity = _mapper.Map<AcUser>(command.Data);
-                entity.CreateDate = DateTime.Now;
-                var user = _context.AcUsers.Where(e => e.UserName == entity.UserName || e.Email == entity.Email);
-                if(user.Count() > 0)
-                    throw new Exception("UserName or Email is already in use");
-                var security = new SecurityHelper();
-                
-                var salt = security.HashCreate();
-                var passwordHash = security.HashCreate(entity.Password, salt);
+            var entity = _mapper.Map<AcUser>(command.Data);
+            entity.CreateDate = DateTime.Now;
+            var user = _context.AcUsers.Where(e => e.UserName == entity.UserName);
 
-                entity.Password = passwordHash.Split('æ')[0];
-                entity.Salt = passwordHash.Split('æ')[1];
+            if (user.Count() > 0)
+                throw new Exception("UserName is already in use");
+            var email = _context.AcUsers.Where(e => e.Email == entity.Email);
 
-                _context.AcUsers.Add(entity);
+            if (email.Count() > 0)
+                throw new Exception("Email is already in use");
 
-                //var test = security.ValidateHash(command.Data.Password, entity.Salt, entity.Password);
+            var security = new SecurityHelper();
 
-                var result = _context.SaveChanges();
+            var salt = security.HashCreate();
+            var passwordHash = security.HashCreate(entity.Password, salt);
 
-                if(result == 0)
-                    throw new Exception("An error occured while inserting user to table.");
-            }
+            entity.Password = passwordHash.Split('æ')[0];
+            entity.Salt = passwordHash.Split('æ')[1];
+
+            _context.AcUsers.Add(entity);
+            var result = _context.SaveChanges();
+
+            if (result == 0)
+                throw new Exception("An error occured while inserting user to table.");
 
             return Task.FromResult(response);
         }
