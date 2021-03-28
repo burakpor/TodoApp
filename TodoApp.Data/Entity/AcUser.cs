@@ -9,6 +9,7 @@ namespace TodoApp.Data.Entity
     {
         public AcUser()
         {
+            AcCategories = new HashSet<AcCategory>();
             AcTasks = new HashSet<AcTask>();
         }
 
@@ -21,6 +22,7 @@ namespace TodoApp.Data.Entity
         public string LastName { get; set; }
         public string Salt { get; set; }
 
+        public virtual ICollection<AcCategory> AcCategories { get; set; }
         public virtual ICollection<AcTask> AcTasks { get; set; }
     }
 }

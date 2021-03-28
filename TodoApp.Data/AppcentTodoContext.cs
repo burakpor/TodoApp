@@ -50,6 +50,12 @@ namespace TodoApp.Data.Entity
                 entity.Property(e => e.CategoryName).HasMaxLength(50);
 
                 entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AcCategories)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AcCategory_AcUser");
             });
 
             modelBuilder.Entity<AcTask>(entity =>
@@ -175,7 +181,7 @@ namespace TodoApp.Data.Entity
             modelBuilder.Entity<AcUser>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__AcUser__1788CC4CC459953C");
+                    .HasName("PK__AcUser__1788CC4CB460F746");
 
                 entity.ToTable("AcUser");
 

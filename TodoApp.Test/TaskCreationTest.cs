@@ -1,0 +1,55 @@
+using System.Linq;
+using System.Threading.Tasks;
+using TodoApp.CommandHandlers.SigingCommandHandlers;
+using TodoApp.Commands.SigningCommands;
+using TodoApp.Data.Entity;
+using TodoApp.Models.BusinessModels;
+using TodoApp.Test.Helpers;
+using Xunit;
+using Microsoft.Extensions.Options;
+using TodoApp.CommandHandlers.TodoCommandHandlers;
+using TodoApp.Commands.TodoCommands;
+using TodoApp.Models.EntityModels;
+
+namespace TodoApp.Test
+{
+    public class TaskCreationTest
+    {
+        [Fact]
+        public async Task Task_Create()
+        {
+            try
+            {
+                var options = TestHelper.GetMockDBOptions();
+                using (var context = new AppcentTodoContext(options))
+                {
+                    var service = new AddTodoCommandHandler(context);
+                    var command = new AddTodoCommand();
+                    command.Data = new AddTodoRequest
+                    {
+                        UserName = "burak",
+                        Name = "Task test",
+                        Category = "Project",
+                        TaskPriority = TaskPriority.P1,
+                        TaskStatus = Models.EntityModels.TaskStatus.Todo
+                    };
+                    var result = await service.Execute(command);
+                    Assert.True(result.Result.IsSuccess);
+                }
+
+                using (var context = new AppcentTodoContext(options))
+                {
+                    var count = context.AcTasks.Where(e => e.Name == "Task test");
+                    Assert.Equal(1, count.Count());
+                }
+            }
+            finally
+            {
+                TestHelper.SqliteConnection.Close();
+            }
+        }
+
+   
+
+    }
+}

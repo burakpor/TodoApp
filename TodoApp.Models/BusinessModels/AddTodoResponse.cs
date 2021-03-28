@@ -2,5 +2,6 @@
 {
     public class AddTodoResponse : ResponseBase
     {
+        public int TaskId { get; set; }
     }
 }

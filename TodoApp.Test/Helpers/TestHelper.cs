@@ -55,7 +55,7 @@ namespace TodoApp.Test.Helpers
         {
             if (context.Database.EnsureCreated())
             {
-                context.AcUsers.Add(new AcUser
+                var user = new AcUser
                 {
 
                     Email = "burak@outlook.com",
@@ -63,9 +63,22 @@ namespace TodoApp.Test.Helpers
                     LastName = "Portakal",
                     Password = "F8Xk9gxUyv81JZb/CsRS8h0j+yeDYigh+xNNwYWWNfc=",//testtest
                     UserName = "burak",
-                    Salt= "tOoByYVHjUQ4Ue+SWZPmEQ==",
+                    Salt = "tOoByYVHjUQ4Ue+SWZPmEQ==",
                     CreateDate = DateTime.Now
-                });
+                };
+                context.AcUsers.Add(user);
+
+
+                context.AcTaskStatuses.Add(new AcTaskStatus { Status = "Todo" });
+                context.AcTaskStatuses.Add(new AcTaskStatus { Status = "InProgress" });
+                context.AcTaskStatuses.Add(new AcTaskStatus { Status = "Completed" });
+
+                context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P1" });
+                context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P2" });
+                context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P3" });
+
+                context.AcCategories.Add(new AcCategory { CategoryName = "Project", User = user  });
+
                 context.SaveChanges();
             }
         }
