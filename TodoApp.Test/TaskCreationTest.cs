@@ -1,12 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
-using TodoApp.CommandHandlers.SigingCommandHandlers;
-using TodoApp.Commands.SigningCommands;
 using TodoApp.Data.Entity;
 using TodoApp.Models.BusinessModels;
 using TodoApp.Test.Helpers;
 using Xunit;
-using Microsoft.Extensions.Options;
 using TodoApp.CommandHandlers.TodoCommandHandlers;
 using TodoApp.Commands.TodoCommands;
 using TodoApp.Models.EntityModels;
@@ -74,6 +71,88 @@ namespace TodoApp.Test
                 {
                     var task = context.AcTasks.FirstOrDefault(e => e.TaskId == 2);
                     Assert.True(task.IsDeleted);
+                }
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        [Fact]
+        public async Task Task_Update()
+        {
+            var connection = TestHelper.GetConnection();
+            var options = TestHelper.GetMockDBOptions(connection);
+            try
+            {
+                using (var context = new AppcentTodoContext(options))
+                {
+                    var service = new UpdateTodoCommandHandler(context);
+                    var command = new UpdateTodoCommand();
+                    command.Data = new UpdateTodoRequest
+                    {
+                        TaskId = 1,
+                        UserName = "burak",
+                        Name = "Task test updated",
+                        Category = "Project",
+                        TaskPriority = TaskPriority.P1,
+                        TaskStatus = Models.EntityModels.TaskStatus.Todo
+                    };
+                    var result = await service.Execute(command);
+                    Assert.True(result.Result.IsSuccess);
+                }
+
+                using (var context = new AppcentTodoContext(options))
+                {
+                    var count = context.AcTasks.Where(e => e.TaskId == 1 &&  e.Name == "Task test updated");
+                    Assert.Equal(1, count.Count());
+                }
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        [Fact]
+        public async Task Task_Get()
+        {
+            var connection = TestHelper.GetConnection();
+            var options = TestHelper.GetMockDBOptions(connection);
+            try
+            {
+                using (var context = new AppcentTodoContext(options))
+                {
+                    var service = new GetTodoCommandHandler(context);
+                    var command = new GetTodoCommand();
+                    command.Data = new GetTodoRequest
+                    {
+                        TaskId = 1,
+                        UserName = "burak"
+                    };
+                    var result = await service.Execute(command);
+                    Assert.True(result.Result.IsSuccess);
+                    if (result.GetType().IsAssignableTo(typeof(GetTodoResponse)))
+                    {
+                        var getTodoRes = (GetTodoResponse)result;
+                        Assert.NotNull(getTodoRes.TodoObj);
+                    }
+
+                    command.Data = new GetTodoRequest
+                    {
+                        TaskId = 0,
+                        UserName = "burak"
+                    };
+                    result = await service.Execute(command);
+
+                    Assert.True(result.Result.IsSuccess);
+                    if (result.GetType().IsAssignableTo(typeof(GetTodoResponse)))
+                    {
+                        var getTodoRes = (GetTodoResponse)result;
+                        Assert.NotNull(getTodoRes.TodoList);
+                        Assert.NotEmpty(getTodoRes.TodoList);
+                    }
                 }
             }
             finally

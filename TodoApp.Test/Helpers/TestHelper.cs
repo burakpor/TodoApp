@@ -86,7 +86,8 @@ namespace TodoApp.Test.Helpers
                     Status = 1,
                     TaskPriorityId = 1,
                     User = user,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    CreateDate = DateTime.Now
                 });
 
                 context.AcTasks.Add(new AcTask
@@ -96,7 +97,8 @@ namespace TodoApp.Test.Helpers
                     Status = 1,
                     TaskPriorityId = 1,
                     User = user,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    CreateDate = DateTime.Now
                 });
                 context.SaveChanges();
             }

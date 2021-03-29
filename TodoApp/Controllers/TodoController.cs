@@ -53,5 +53,39 @@ namespace TodoApp.Controllers
             };
             return await Go(command);
         }
+
+        [HttpPost(nameof(UpdateTodo))]
+        public async Task<ActionResult> UpdateTodo([FromBody] UpdateTodoDto viewRequest)
+        {
+            if (!TryValidateModel(viewRequest))
+            {
+                return BadRequest(ValidationHelper.GetModelErrors(ModelState));
+            }
+
+            var request = this._mapper.Map<UpdateTodoRequest>(viewRequest);
+            request.UserName = HttpContext.User.Identity.Name;
+            var command = new UpdateTodoCommand
+            {
+                Data = request
+            };
+            return await Go(command);
+        }
+
+        [HttpPost(nameof(GetTodo))]
+        public async Task<ActionResult> GetTodo([FromBody] GetTodoDto viewRequest)
+        {
+            if (!TryValidateModel(viewRequest))
+            {
+                return BadRequest(ValidationHelper.GetModelErrors(ModelState));
+            }
+
+            var request = this._mapper.Map<GetTodoRequest>(viewRequest);
+            request.UserName = HttpContext.User.Identity.Name;
+            var command = new GetTodoCommand
+            {
+                Data = request
+            };
+            return await Go(command);
+        }
     }
 }
