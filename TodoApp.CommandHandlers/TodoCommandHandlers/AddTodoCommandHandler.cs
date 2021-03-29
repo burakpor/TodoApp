@@ -50,7 +50,7 @@ namespace TodoApp.CommandHandlers.TodoCommandHandlers
                         _context.SaveChanges();
                         scope.Commit();
                     }
-                    catch
+                    catch(Exception ex)
                     {
                         scope.Rollback();
                         throw new Exception("An error occured while creating task.");

@@ -3,8 +3,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using TodoApp.Commands;
-using TodoApp.Commands.SigningCommands;
 using TodoApp.Commands.TodoCommands;
 using TodoApp.Helpers;
 using TodoApp.Models.BusinessModels;
@@ -34,6 +32,23 @@ namespace TodoApp.Controllers
             var request = this._mapper.Map<AddTodoRequest>(viewRequest);
             request.UserName = HttpContext.User.Identity.Name;
             var command = new AddTodoCommand {
+                Data = request
+            };
+            return await Go(command);
+        }
+
+        [HttpPost(nameof(DeleteTodo))]
+        public async Task<ActionResult> DeleteTodo([FromBody] DeleteTodoDto viewRequest)
+        {
+            if (!TryValidateModel(viewRequest))
+            {
+                return BadRequest(ValidationHelper.GetModelErrors(ModelState));
+            }
+
+            var request = this._mapper.Map<DeleteTodoRequest>(viewRequest);
+            request.UserName = HttpContext.User.Identity.Name;
+            var command = new DeleteTodoCommand
+            {
                 Data = request
             };
             return await Go(command);

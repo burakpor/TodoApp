@@ -18,9 +18,10 @@ namespace TodoApp.Test
         [Fact]
         public async Task Task_Create()
         {
+            var connection = TestHelper.GetConnection();
+            var options = TestHelper.GetMockDBOptions(connection);
             try
             {
-                var options = TestHelper.GetMockDBOptions();
                 using (var context = new AppcentTodoContext(options))
                 {
                     var service = new AddTodoCommandHandler(context);
@@ -45,11 +46,40 @@ namespace TodoApp.Test
             }
             finally
             {
-                TestHelper.SqliteConnection.Close();
+                connection.Close();
             }
         }
 
-   
+        [Fact]
+        public async Task Task_Delete()
+        {
+            var connection = TestHelper.GetConnection();
+            var options = TestHelper.GetMockDBOptions(connection);
+            try
+            {
+                using (var context = new AppcentTodoContext(options))
+                {
+                    var service = new DeleteTodoCommandHandler(context);
+                    var command = new DeleteTodoCommand();
+                    command.Data = new DeleteTodoRequest
+                    {
+                        TodoId = 2,
+                        UserName ="burak"
+                    };
+                    var result = await service.Execute(command);
+                    Assert.True(result.Result.IsSuccess);
+                }
 
+                using (var context = new AppcentTodoContext(options))
+                {
+                    var task = context.AcTasks.FirstOrDefault(e => e.TaskId == 2);
+                    Assert.True(task.IsDeleted);
+                }
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
 }
