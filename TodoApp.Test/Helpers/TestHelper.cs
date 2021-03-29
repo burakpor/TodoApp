@@ -15,7 +15,6 @@ namespace TodoApp.Test.Helpers
 {
     public static class TestHelper
     {
-        public static SqliteConnection SqliteConnection;
         public static IMapper GetMapperInstance()
         {
             var mockMapper = new MapperConfiguration(cfg =>
@@ -26,21 +25,22 @@ namespace TodoApp.Test.Helpers
             return mapper;
         }
 
-        public static DbContextOptions<AppcentTodoContext> GetMockDBOptions()
+        public static SqliteConnection GetConnection()
         {
-
             var connection = new SqliteConnection("DataSource=:memory:");
-            SqliteConnection = connection;
             connection.Open();
-            var options = new DbContextOptionsBuilder<AppcentTodoContext>()
-                   .UseSqlite(connection)
-                   .Options;
-
-            // Create the schema in the database
-            using (var context = new AppcentTodoContext(options))
+            using (var context = new AppcentTodoContext(GetMockDBOptions(connection)))
             {
                 EnsureCreated(context);
             }
+            return connection;
+        }
+
+        public static DbContextOptions<AppcentTodoContext> GetMockDBOptions(SqliteConnection connection)
+        {
+            var options = new DbContextOptionsBuilder<AppcentTodoContext>()
+                   .UseSqlite(connection)
+                   .Options;
             return options;
         }
 
@@ -55,7 +55,7 @@ namespace TodoApp.Test.Helpers
         {
             if (context.Database.EnsureCreated())
             {
-                context.AcUsers.Add(new AcUser
+                var user = new AcUser
                 {
 
                     Email = "burak@outlook.com",
@@ -63,7 +63,41 @@ namespace TodoApp.Test.Helpers
                     LastName = "Portakal",
                     Password = "F8Xk9gxUyv81JZb/CsRS8h0j+yeDYigh+xNNwYWWNfc=",//testtest
                     UserName = "burak",
-                    Salt= "tOoByYVHjUQ4Ue+SWZPmEQ==",
+                    Salt = "tOoByYVHjUQ4Ue+SWZPmEQ==",
+                    CreateDate = DateTime.Now
+                };
+                context.AcUsers.Add(user);
+
+
+                context.AcTaskStatuses.Add(new AcTaskStatus { Status = "Todo" });
+                context.AcTaskStatuses.Add(new AcTaskStatus { Status = "InProgress" });
+                context.AcTaskStatuses.Add(new AcTaskStatus { Status = "Completed" });
+
+                context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P1" });
+                context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P2" });
+                context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P3" });
+
+                context.AcCategories.Add(new AcCategory { CategoryName = "Project", User = user  });
+
+                context.AcTasks.Add(new AcTask
+                {
+                    Name ="Test task",
+                    CategoryId = 1,
+                    Status = 1,
+                    TaskPriorityId = 1,
+                    User = user,
+                    IsDeleted = false,
+                    CreateDate = DateTime.Now
+                });
+
+                context.AcTasks.Add(new AcTask
+                {
+                    Name = "Test task 2",
+                    CategoryId = 1,
+                    Status = 1,
+                    TaskPriorityId = 1,
+                    User = user,
+                    IsDeleted = false,
                     CreateDate = DateTime.Now
                 });
                 context.SaveChanges();

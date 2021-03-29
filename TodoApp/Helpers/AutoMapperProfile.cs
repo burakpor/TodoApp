@@ -12,6 +12,10 @@ namespace TodoApp.Helpers
             CreateMap<RegisterUserDto, RegisterUserRequest>();
             CreateMap<RegisterUserRequest, AcUser>();
             CreateMap<UserLoginDto, UserLoginRequest>();
+            CreateMap<AddTodoDto, AddTodoRequest>();
+            CreateMap<DeleteTodoDto, DeleteTodoRequest>();
+            CreateMap<UpdateTodoDto, UpdateTodoRequest>();
+            CreateMap<GetTodoDto, GetTodoRequest>();
         }
     }
 }

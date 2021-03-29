@@ -13,6 +13,9 @@ using System.Text.Json;
 using TodoApp.Models.Dtos;
 using TodoApp.Data.Entity;
 using TodoApp.Helpers;
+using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace TodoApp
 {
@@ -29,16 +32,46 @@ namespace TodoApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSwaggerGen();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description =
+            "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement(){
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
+            });
+
             services.AddAutoMapper(e =>
             {
                 e.AddProfile(new AutoMapperProfile());
             });
+
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
-            // JWT authentication Aayarlaması
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
@@ -58,9 +91,10 @@ namespace TodoApp
                     ValidateAudience = false
                 };
             });
-            //Register DBContext
+
             services.AddDbContext<AppcentTodoContext>(options =>
                   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
@@ -69,6 +103,7 @@ namespace TodoApp
             services.AddMvcCore().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
         }
 

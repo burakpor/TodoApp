@@ -41,11 +41,21 @@ namespace TodoApp.CommandHandlers.SigingCommandHandlers
             entity.Password = passwordHash.Split('æ')[0];
             entity.Salt = passwordHash.Split('æ')[1];
 
-            _context.AcUsers.Add(entity);
-            var result = _context.SaveChanges();
-
-            if (result == 0)
-                throw new Exception("An error occured while inserting user to table.");
+            using (var scope = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.AcUsers.Add(entity);
+                    _context.AcCategories.Add(new AcCategory { CategoryName = "Project", User = entity });
+                    _context.SaveChanges();
+                    scope.Commit();
+                }
+                catch
+                {
+                    scope.Rollback();
+                    throw new Exception("An error occured while inserting user to table.");
+                }
+            }
 
             return Task.FromResult(response);
         }

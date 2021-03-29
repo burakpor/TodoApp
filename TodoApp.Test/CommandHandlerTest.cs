@@ -15,10 +15,11 @@ namespace TodoApp.Test
         [Fact]
         public async Task Create_User()
         {
+            var connection = TestHelper.GetConnection();
+            var options = TestHelper.GetMockDBOptions(connection);
             try
             {
-                var options = TestHelper.GetMockDBOptions();
-                // Run the test against one instance of the context
+                
                 using (var context = new AppcentTodoContext(options))
                 {
                     var service = new RegisterUserCommandHandler(context, TestHelper.GetMapperInstance());
@@ -36,7 +37,6 @@ namespace TodoApp.Test
                     Assert.True(result.Result.IsSuccess);
                 }
 
-                // Use a separate instance of the context to verify correct data was saved to database
                 using (var context = new AppcentTodoContext(options))
                 {
                     var count = context.AcUsers.Where(e => e.FirstName == "test firstname");
@@ -45,16 +45,18 @@ namespace TodoApp.Test
             }
             finally
             {
-                TestHelper.SqliteConnection.Close();
+                connection.Close();
             }
         }
 
         [Fact]
         public async Task Create_User_UserName_Already_Exists()
         {
+            var connection = TestHelper.GetConnection();
+            var options = TestHelper.GetMockDBOptions(connection);
             try
             {
-                var options = TestHelper.GetMockDBOptions();
+              
                 // Run the test against one instance of the context
                 using (var context = new AppcentTodoContext(options))
                 {
@@ -77,16 +79,17 @@ namespace TodoApp.Test
             }
             finally
             {
-                TestHelper.SqliteConnection.Close();
+                connection.Close();
             }
         }
 
         [Fact]
         public async Task Create_User_Email_Already_Exists()
         {
+            var connection = TestHelper.GetConnection();
+            var options = TestHelper.GetMockDBOptions(connection);
             try
             {
-                var options = TestHelper.GetMockDBOptions();
                 // Run the test against one instance of the context
                 using (var context = new AppcentTodoContext(options))
                 {
@@ -109,16 +112,16 @@ namespace TodoApp.Test
             }
             finally
             {
-                TestHelper.SqliteConnection.Close();
+                connection.Close();
             }
         }
         [Fact]
         public async Task Login_User()
         {
+            var connection = TestHelper.GetConnection();
+            var options = TestHelper.GetMockDBOptions(connection);
             try
             {
-                var options = TestHelper.GetMockDBOptions();
-                // Run the test against one instance of the context
                 using (var context = new AppcentTodoContext(options))
                 {
                     TestHelper.EnsureCreated(context);
@@ -143,17 +146,17 @@ namespace TodoApp.Test
             }
             finally
             {
-                TestHelper.SqliteConnection.Close();
+                connection.Close();
             }
         }
 
         [Fact]
         public async Task Login_User_Wrong_Password()
         {
+            var connection = TestHelper.GetConnection();
+            var options = TestHelper.GetMockDBOptions(connection);
             try
             {
-                var options = TestHelper.GetMockDBOptions();
-                // Run the test against one instance of the context
                 using (var context = new AppcentTodoContext(options))
                 {
                     TestHelper.EnsureCreated(context);
@@ -174,17 +177,17 @@ namespace TodoApp.Test
             }
             finally
             {
-                TestHelper.SqliteConnection.Close();
+                connection.Close();
             }
         }
 
         [Fact]
         public async Task Login_User_Wrong_UserName()
         {
+            var connection = TestHelper.GetConnection();
+            var options = TestHelper.GetMockDBOptions(connection);
             try
             {
-                var options = TestHelper.GetMockDBOptions();
-                // Run the test against one instance of the context
                 using (var context = new AppcentTodoContext(options))
                 {
                     TestHelper.EnsureCreated(context);
@@ -203,7 +206,7 @@ namespace TodoApp.Test
             }
             finally
             {
-                TestHelper.SqliteConnection.Close();
+                connection.Close();
             }
         }
 

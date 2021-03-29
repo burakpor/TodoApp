@@ -2,7 +2,7 @@
 
 namespace TodoApp.Commands.TodoCommands
 {
-    public class AddTodoCommand: Command<RegisterUserRequest,RegisterUserResponse>, ICommand
+    public class AddTodoCommand: Command<AddTodoRequest,AddTodoResponse>, ICommand
     {
     }
 }
