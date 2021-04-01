@@ -31,7 +31,7 @@ namespace TodoApp.Controllers
 
             var request = this._mapper.Map<AddTodoRequest>(viewRequest);
             request.UserName = HttpContext.User.Identity.Name;
-            var command = new AddTodoCommand {
+            var command = new AddCategoryCommand {
                 Data = request
             };
             return await Go(command);

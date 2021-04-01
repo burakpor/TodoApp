@@ -99,7 +99,7 @@ namespace TodoApp
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-
+            services.AddCors();
             services.AddMvcCore().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
@@ -120,7 +120,12 @@ namespace TodoApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseCors(e =>
+            {
+                e.AllowAnyOrigin();
+                e.AllowAnyMethod();
+                e.AllowAnyHeader();
+            });
             app.UseSwagger();
             app.UseSwaggerUI(e =>
             {
