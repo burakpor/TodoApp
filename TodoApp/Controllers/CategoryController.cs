@@ -3,7 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using TodoApp.Commands.TodoCommands;
+using TodoApp.Commands.CategoryCommands;
 using TodoApp.Helpers;
 using TodoApp.Models.BusinessModels;
 using TodoApp.Models.Dtos;
@@ -13,75 +13,75 @@ namespace TodoApp.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class TodoController : BaseApiController
+    public class CategoryController : BaseApiController
     {
         private readonly IMapper _mapper;
-        public TodoController(IComponentContext icocontext, IMapper mapper) : base(icocontext)
+        public CategoryController(IComponentContext icocontext, IMapper mapper) : base(icocontext)
         {
             _mapper = mapper;
         }
 
-        [HttpPost(nameof(AddTodo))]
-        public async Task<ActionResult> AddTodo([FromBody] AddTodoDto viewRequest)
+        [HttpPost(nameof(AddCategory))]
+        public async Task<ActionResult> AddCategory([FromBody] AddCategoryDto viewRequest)
         {
             if (!TryValidateModel(viewRequest))
             {
                 return BadRequest(ValidationHelper.GetModelErrors(ModelState));
             }
 
-            var request = this._mapper.Map<AddTodoRequest>(viewRequest);
+            var request = this._mapper.Map<AddCategoryRequest>(viewRequest);
             request.UserName = HttpContext.User.Identity.Name;
-            var command = new AddTodoCommand {
+            var command = new AddCategoryCommand {
                 Data = request
             };
             return await Go(command);
         }
 
-        [HttpPost(nameof(DeleteTodo))]
-        public async Task<ActionResult> DeleteTodo([FromBody] DeleteTodoDto viewRequest)
+        [HttpPost(nameof(DeleteCategory))]
+        public async Task<ActionResult> DeleteCategory([FromBody] DeleteCategoryDto viewRequest)
         {
             if (!TryValidateModel(viewRequest))
             {
                 return BadRequest(ValidationHelper.GetModelErrors(ModelState));
             }
 
-            var request = this._mapper.Map<DeleteTodoRequest>(viewRequest);
+            var request = this._mapper.Map<DeleteCategoryRequest>(viewRequest);
             request.UserName = HttpContext.User.Identity.Name;
-            var command = new DeleteTodoCommand
-            {
-                Data = request
-            };
-            return await Go(command);
-        }
-
-        [HttpPost(nameof(UpdateTodo))]
-        public async Task<ActionResult> UpdateTodo([FromBody] UpdateTodoDto viewRequest)
-        {
-            if (!TryValidateModel(viewRequest))
-            {
-                return BadRequest(ValidationHelper.GetModelErrors(ModelState));
-            }
-
-            var request = this._mapper.Map<UpdateTodoRequest>(viewRequest);
-            request.UserName = HttpContext.User.Identity.Name;
-            var command = new UpdateTodoCommand
+            var command = new DeleteCategoryCommand
             {
                 Data = request
             };
             return await Go(command);
         }
 
-        [HttpPost(nameof(GetTodo))]
-        public async Task<ActionResult> GetTodo([FromBody] GetTodoDto viewRequest)
+        [HttpPost(nameof(UpdateCategory))]
+        public async Task<ActionResult> UpdateCategory([FromBody] UpdateCategoryDto viewRequest)
         {
             if (!TryValidateModel(viewRequest))
             {
                 return BadRequest(ValidationHelper.GetModelErrors(ModelState));
             }
 
-            var request = this._mapper.Map<GetTodoRequest>(viewRequest);
+            var request = this._mapper.Map<UpdateCategoryRequest>(viewRequest);
             request.UserName = HttpContext.User.Identity.Name;
-            var command = new GetTodoCommand
+            var command = new UpdateCategoryCommand
+            {
+                Data = request
+            };
+            return await Go(command);
+        }
+
+        [HttpPost(nameof(GetCategory))]
+        public async Task<ActionResult> GetCategory([FromBody] GetCategoryDto viewRequest)
+        {
+            if (!TryValidateModel(viewRequest))
+            {
+                return BadRequest(ValidationHelper.GetModelErrors(ModelState));
+            }
+
+            var request = this._mapper.Map<GetCategoryRequest>(viewRequest);
+            request.UserName = HttpContext.User.Identity.Name;
+            var command = new GetCategoryCommand
             {
                 Data = request
             };
