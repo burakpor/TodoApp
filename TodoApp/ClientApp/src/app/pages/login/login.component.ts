@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { UserService } from 'src/services/user.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class AppComponent {
-  title = 'TodoApp';
+export class LoginComponent {
   constructor(private userService: UserService){}
 }
