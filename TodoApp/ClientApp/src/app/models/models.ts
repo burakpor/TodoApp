@@ -104,9 +104,9 @@ export interface DeleteCategoryResponse extends ResponseBase {
 
     export interface AddTodoDto {
         Name: string;
-        Category: string;
+        CategoryId: number;
         TaskStatus: TaskStatus;
-        RootTaskId: number;
+        RootTaskId?: number;
         TaskPriority: TaskPriority;
     }
 

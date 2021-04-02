@@ -24,7 +24,7 @@ namespace TodoApp.CommandHandlers.CategoryCommandHandlers
 
             var category = new AcCategory
             {
-                CategoryName = request.Name,
+                CategoryName = request.Category,
                 User = user,
                 IsDeleted = false
             };

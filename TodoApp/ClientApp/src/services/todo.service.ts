@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { GetCategoryDto, GetCategoryResponse, Todo, UpdateTodoDto } from "src/app/models/models";
+import { AddCategoryDto, AddCategoryResponse, AddTodoDto, GetCategoryDto, GetCategoryResponse, TaskPriority, TaskStatus, Todo, UpdateTodoDto } from "src/app/models/models";
 import { HttpCallService } from "./http-call.service";
 
 @Injectable({ providedIn: "root" })
@@ -27,5 +27,22 @@ export class TodoService {
             CategoryId: categoryId
         }
         return this.http.post<GetCategoryResponse>("Todo", "UpdateTodo", request);
+    }
+
+    addTodo(todoText: string,categoryId: number, taskStatus: TaskStatus){
+        const request: AddTodoDto = {
+            CategoryId:categoryId,
+            Name: todoText,
+            TaskPriority: TaskPriority.P1,
+            TaskStatus: taskStatus
+        }
+        return this.http.post<GetCategoryResponse>("Todo", "AddTodo", request);
+    }
+
+    addCategory(categoryName: string){
+        const request: AddCategoryDto = {
+            Category: categoryName
+        }
+        return this.http.post<AddCategoryResponse>("Category", "AddCategory", request);
     }
 }

@@ -21,6 +21,7 @@ export class ModalComponent {
             
             const componentRef: ComponentRef<Modal> = this.modalTemplate.createComponent(componentFactory);
             this.componentRef = componentRef;
+            this.componentRef.instance.Data = val.Data;
         })
     }
 
@@ -31,15 +32,18 @@ export class ModalComponent {
     saveClick(){
         const result = this.componentRef.instance.OnSave();
         this.modalModel.CallBackFunction(result);
+        this.closeModal();
     }
     
 }
 
 export interface Modal{
     OnSave: Function;
+    Data: any;
 }
 
 export interface ModalModel{
     Component: Type<Modal>;
+    Data?: any;
     CallBackFunction: Function;
 }

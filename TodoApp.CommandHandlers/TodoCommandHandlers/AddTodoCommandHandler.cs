@@ -21,7 +21,7 @@ namespace TodoApp.CommandHandlers.TodoCommandHandlers
             var request = command.Data;
             var user = _context.AcUsers.FirstOrDefault(e => e.UserName == request.UserName);
 
-            var category = _context.AcCategories.FirstOrDefault(e => e.UserId == user.UserId && e.CategoryName == request.Category && e.IsDeleted == false);
+            var category = _context.AcCategories.FirstOrDefault(e => e.UserId == user.UserId && e.CategoryId == request.CategoryId && e.IsDeleted == false);
             if (category != null)
             {
                 var entity = new AcTask

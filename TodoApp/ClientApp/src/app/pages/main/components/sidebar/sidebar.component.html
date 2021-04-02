@@ -1,7 +1,19 @@
-<div class="flex transform -translate-x-52-5 md:translate-x-0 bg-blue-50" style="width: 200px;height: 1000px;">
-    <div class="flex flex-grow flex-row justify-center">
-        <ul class="list-none">
-            <li *ngFor="let category of categoryList"><button (click)="openCategory(category)">{{ category.Name }}</button></li>
-        </ul>
+<div class="transform -translate-x-52-5 md:translate-x-0 bg-blue-50" style="width: 200px;height: 1000px;">
+    <div class="justify-center p-5">
+        <div *ngIf="!showAddCategory" (click)="showAddCategory = true" class="flex flex-row" style="cursor: pointer;">
+            <button >Add New Category</button><p class="font-bold ml-3">+</p>
+
+        </div>
+        <div *ngIf="showAddCategory" class="add-category flex">
+            <input [(ngModel)]="categoryName" class="h-10 px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" style="width: 100%"
+            type="name" name="name" placeholder="Name">
+            <button class="save" (click)="saveCategory()">Save</button>
+        </div>
+        <div>
+            <ul class="list-none">
+                <li class="p-5" *ngFor="let category of categoryList"><button (click)="openCategory(category)">{{ category.Name }}</button></li>
+            </ul>
+        </div>
+        
     </div>
 </div>
