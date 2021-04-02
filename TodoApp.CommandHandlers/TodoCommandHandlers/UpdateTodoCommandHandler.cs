@@ -23,7 +23,7 @@ namespace TodoApp.CommandHandlers.TodoCommandHandlers
 
             if (task != null)
             {
-                var category = _context.AcCategories.FirstOrDefault(e => e.UserId == user.UserId && e.CategoryName == request.Category && e.IsDeleted == false);
+                var category = _context.AcCategories.FirstOrDefault(e => e.UserId == user.UserId && e.CategoryId == request.CategoryId && e.IsDeleted == false);
 
                 if (category != null)
                 {

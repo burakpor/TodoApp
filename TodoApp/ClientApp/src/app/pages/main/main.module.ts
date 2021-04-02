@@ -8,6 +8,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ContainerComponent } from './components/container/container.component';
 import { BodyComponent } from './components/body/body.component';
 import { TodoContainerComponent } from './components/todo-container/todo-container.component';
+import { TodoCreateComponent } from './components/todo-create/todo-create.component';
 const routes: Routes = [
   {
     path: '', component: ContainerComponent
@@ -20,7 +21,8 @@ const routes: Routes = [
       HeaderComponent,
       ContainerComponent,
       BodyComponent,
-      TodoContainerComponent
+      TodoContainerComponent,
+      TodoCreateComponent
   ],
   imports: [
     RouterModule.forChild(routes),
