@@ -13,6 +13,11 @@
 
 ## Development
 
+Install npm packages. Open ClientApp in command line terminal, type
+```
+npm install
+```
+
 Start app by open ClientApp folder in command line terminal, execute following command
 ```
 ng serve
