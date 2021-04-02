@@ -26,7 +26,7 @@ namespace TodoApp.Test
                     command.Data = new AddCategoryRequest
                     {
                         UserName = "burak",
-                        Name = "Task Category"
+                        Category = "Task Category"
                     };
                     var result = await service.Execute(command);
                     Assert.True(result.Result.IsSuccess);

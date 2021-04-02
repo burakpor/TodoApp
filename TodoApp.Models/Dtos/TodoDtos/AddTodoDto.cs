@@ -8,11 +8,9 @@ namespace TodoApp.Models.Dtos
         [Required]
         public string Name { get; set; }
         [Required]
-        public string Category { get; set; }
-        [Required]
+        public int CategoryId { get; set; }
         public TaskStatus TaskStatus { get; set; }
         public int RootTaskId { get; set; }
-        [Required]
         public TaskPriority TaskPriority { get; set; }
     }
 }

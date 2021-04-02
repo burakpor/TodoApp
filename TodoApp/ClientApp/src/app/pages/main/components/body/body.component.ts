@@ -21,20 +21,22 @@ export class BodyComponent {
 
   fillTodoList() {
     this.applicationManager.loadTodoSubject.subscribe((category) => {
-      if (category && !_.isEmpty(category.TodoList)) {
+      if (category) {
         this.category = category;
         this.todoList = [];
         this.inProgressList = [];
         this.completedList = [];
-        
-        category.TodoList.map((e) => {
-          if (e.Status == TaskStatus.Todo)
-            this.todoList.push(e);
-          else if (e.Status == TaskStatus.InProgress)
-            this.inProgressList.push(e);
-          else if (e.Status == TaskStatus.Completed)
-            this.completedList.push(e);
-        })
+
+        if (!_.isEmpty(category.TodoList)) {
+          category.TodoList.map((e) => {
+            if (e.Status == TaskStatus.Todo)
+              this.todoList.push(e);
+            else if (e.Status == TaskStatus.InProgress)
+              this.inProgressList.push(e);
+            else if (e.Status == TaskStatus.Completed)
+              this.completedList.push(e);
+          })
+        }
       }
     })
   }

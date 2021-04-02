@@ -13,7 +13,7 @@
         <div *ngIf="todo.Status != 'Todo'" class="justify-start" style="font-size: 1.5rem; text-align: right;">
             <button (click)="updateStatusPrevious(todo)" class="font-black font-bold"> <- </button>
         </div>
-        <div class="todo-text pl-2" style="flex-grow: 2; align-self: center;">
+        <div (click)="openEditModal(todo)" class="todo-text pl-2" style="flex-grow: 2; align-self: center;cursor: pointer;">
             <h3>{{ todo.Name }}</h3>
         </div>
         <div *ngIf="todo.Status != 'Completed'" class="justify-end flex-grow" style="font-size: 1.5rem; text-align: right;">

@@ -31,7 +31,7 @@ export class TodoContainerComponent {
 
   @Input() headerText: string;
 
-  constructor(private todoService: TodoService, private applicationManager: ApplicationManager, private modalService:ModalService) { }
+  constructor(private todoService: TodoService, private applicationManager: ApplicationManager, private modalService: ModalService) { }
 
   updateStatusNext(todo: Todo) {
     if (todo.Status == TaskStatus.Todo)
@@ -69,11 +69,45 @@ export class TodoContainerComponent {
     }
   }
 
-  openModal(){
+  getTaskStatus() {
+    if (this.headerText == "Todo")
+      return TaskStatus.Todo;
+    else if (this.headerText == "In Progress")
+      return TaskStatus.InProgress;
+    else
+      return TaskStatus.Completed;
+  }
+
+  openModal() {
     const modal: ModalModel = {
       Component: TodoCreateComponent,
-      CallBackFunction : (test) => {
-        console.log(test);
+      CallBackFunction: (data) => {
+
+        this.todoService.addTodo(data, this.categoryId,this.getTaskStatus()).subscribe(() => {
+          this.todoService.getCategory(this.categoryId).subscribe((res) => {
+            if (res.Result.IsSuccess)
+              this.applicationManager.loadTodoSubject.next(res.CategoryObj);
+
+          })
+        });
+      }
+    }
+    this.modalService.openModalSubject.next(modal);
+  }
+
+  openEditModal(todo: Todo){
+    const modal: ModalModel = {
+      Component: TodoCreateComponent,
+      Data: todo.Name,
+      CallBackFunction: (data) => {
+        todo.Name = data;
+        this.todoService.updateTodo(todo, this.categoryId).subscribe(() => {
+          this.todoService.getCategory(this.categoryId).subscribe((res) => {
+            if (res.Result.IsSuccess)
+              this.applicationManager.loadTodoSubject.next(res.CategoryObj);
+
+          })
+        });
       }
     }
     this.modalService.openModalSubject.next(modal);
