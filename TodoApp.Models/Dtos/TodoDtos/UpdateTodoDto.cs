@@ -10,7 +10,7 @@ namespace TodoApp.Models.Dtos
         [Required]
         public string Name { get; set; }
         [Required]
-        public string Category { get; set; }
+        public int CategoryId { get; set; }
         [Required]
         public TaskStatus TaskStatus { get; set; }
         public int RootTaskId { get; set; }

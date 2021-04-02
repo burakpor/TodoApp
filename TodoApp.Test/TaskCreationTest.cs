@@ -95,7 +95,7 @@ namespace TodoApp.Test
                         TaskId = 1,
                         UserName = "burak",
                         Name = "Task test updated",
-                        Category = "Project",
+                        CategoryId = 1,
                         TaskPriority = TaskPriority.P1,
                         TaskStatus = Models.EntityModels.TaskStatus.Todo
                     };

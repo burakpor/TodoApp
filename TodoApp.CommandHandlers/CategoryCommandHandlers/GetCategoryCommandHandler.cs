@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 using TodoApp.Commands.CategoryCommands;
 using TodoApp.Data.Entity;
@@ -21,11 +22,13 @@ namespace TodoApp.CommandHandlers.CategoryCommandHandlers
             var user = _context.AcUsers.FirstOrDefault(e => e.UserName == request.UserName);
             if (request.CategoryId != 0)
             {
-                var category = _context.AcCategories.FirstOrDefault(e => e.CategoryId == request.CategoryId && e.User == user && e.IsDeleted == false);
+                var category = _context.AcCategories.Include(e => e.AcTasks)
+                    .FirstOrDefault(e => e.CategoryId == request.CategoryId && e.User == user && e.IsDeleted == false);
                 if (category != null)
                 {
                     response.CategoryObj = new Category
                     {
+                        CategoryId = category.CategoryId,
                         Name = category.CategoryName,
                         TodoList = category.AcTasks.ToList().Select((e) =>
                         {
@@ -46,6 +49,7 @@ namespace TodoApp.CommandHandlers.CategoryCommandHandlers
             {
                 response.Categories = _context.AcCategories.Where(e => e.User == user && e.IsDeleted == false).Select(category => new Category
                 {
+                    CategoryId = category.CategoryId,
                     Name = category.CategoryName,
                     TodoList = category.AcTasks.ToList().Select(e => new Todo
                     {

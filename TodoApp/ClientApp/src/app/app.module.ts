@@ -7,9 +7,11 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginModule} from './pages/login/login.module';
 import { MainModule } from './pages/main/main.module';
+import { ModalComponent } from './components/modal/modal.component';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
