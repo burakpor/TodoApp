@@ -1,27 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Autofac;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
-using TodoApp;
+using System.Threading.Tasks;
 
 namespace TodoApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TestController : ControllerBase
+    public class TestController : BaseApiController
     {
-        private readonly AppcentTodoContext context;
-
-        public TestController(AppcentTodoContext _context)
+        public TestController(IComponentContext icocontext): base(icocontext)
         {
-            context = _context;
         }
 
         [HttpGet]
-        public ActionResult Get()
+        [Authorize]
+        public async Task<ActionResult> GetAsync()
         {
             try
             {
-                return Ok(context.TestTable.FirstOrDefault(a => a.Id == 1)?.Id);
+                return Ok("OK");
             }
             catch (Exception ex)
             {

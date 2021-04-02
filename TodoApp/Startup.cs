@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +8,15 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TodoApp.Models.BusinessModels;
 using Microsoft.EntityFrameworkCore;
+using TodoApp.Data;
+using System.Text.Json;
+using TodoApp.Models.Dtos;
+using TodoApp.Data.Entity;
+using TodoApp.Helpers;
+using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
 namespace TodoApp
 {
     public class Startup
@@ -25,13 +32,46 @@ namespace TodoApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSwaggerGen();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description =
+            "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement(){
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
+            });
+
+            services.AddAutoMapper(e =>
+            {
+                e.AddProfile(new AutoMapperProfile());
+            });
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
-            // JWT authentication Aayarlaması
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
@@ -51,13 +91,19 @@ namespace TodoApp
                     ValidateAudience = false
                 };
             });
-            //Register DBContext
+
             services.AddDbContext<AppcentTodoContext>(options =>
-                          options.UseSqlServer(
-                              Configuration.GetConnectionString("DefaultConnection")));
+                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
+            });
+            services.AddCors();
+            services.AddMvcCore().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
         }
 
@@ -74,7 +120,12 @@ namespace TodoApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseCors(e =>
+            {
+                e.AllowAnyOrigin();
+                e.AllowAnyMethod();
+                e.AllowAnyHeader();
+            });
             app.UseSwagger();
             app.UseSwaggerUI(e =>
             {
@@ -87,9 +138,9 @@ namespace TodoApp
             {
                 app.UseSpaStaticFiles();
             }
-
+            app.UseAuthentication();
             app.UseRouting();
-
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

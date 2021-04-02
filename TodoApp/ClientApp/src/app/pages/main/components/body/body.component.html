@@ -1,0 +1,8 @@
+<div class="container mx-auto flex transform -translate-x-52-5 md:translate-x-0">
+    <div class="bg-white flex flex-row overflow-y-visible" style="width: 100vw;">
+       <app-todo-container [categoryId]="category?.CategoryId" headerText="Todo" [todoList]="todoList"></app-todo-container>
+       <app-todo-container [categoryId]="category?.CategoryId" headerText="In Progress" [todoList]="inProgressList"></app-todo-container>
+       <app-todo-container [categoryId]="category?.CategoryId" headerText="Completed" [todoList]="completedList"></app-todo-container>
+
+    </div>
+</div>

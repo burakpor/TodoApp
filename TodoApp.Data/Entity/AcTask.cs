@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace TodoApp.Entity
+namespace TodoApp.Data.Entity
 {
     public partial class AcTask
     {
@@ -23,6 +23,7 @@ namespace TodoApp.Entity
         public int? RootTaskId { get; set; }
         public int? TaskPriorityId { get; set; }
         public DateTime CreateDate { get; set; }
+        public bool? IsDeleted { get; set; }
 
         public virtual AcCategory Category { get; set; }
         public virtual AcTask RootTask { get; set; }
