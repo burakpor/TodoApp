@@ -27,7 +27,7 @@ namespace TodoApp.Test
                     {
                         UserName = "burak",
                         Name = "Task test",
-                        Category = "Project",
+                        CategoryId = 1,
                         TaskPriority = TaskPriority.P1,
                         TaskStatus = Models.EntityModels.TaskStatus.Todo
                     };
