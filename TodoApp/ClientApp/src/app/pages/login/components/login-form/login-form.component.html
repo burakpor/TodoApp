@@ -29,7 +29,7 @@
               </div>
             </div>
             <input formControlName="{{passwordKey}}" class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"
-              type="" placeholder="Enter your password">
+              type="password" placeholder="Enter your password">
               <div *ngIf="Password.invalid && (Password.dirty || Password.touched)" class="text-red-600 mt-1">
 
                 <div *ngIf="Password?.errors?.required">
