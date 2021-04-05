@@ -6,7 +6,7 @@ namespace TodoApp.Models.BusinessModels
 {
     public class AddTodoResponse : ResponseBase
     {
-        public int TaskId { get; set; }
+        public Todo Todo { get; set; }
     }
 
     public class DeleteTodoResponse : ResponseBase
@@ -14,6 +14,7 @@ namespace TodoApp.Models.BusinessModels
     }
     public class UpdateTodoResponse : ResponseBase
     {
+        public Todo Todo { get; set; }
     }
     public class GetTodoResponse : ResponseBase
     {

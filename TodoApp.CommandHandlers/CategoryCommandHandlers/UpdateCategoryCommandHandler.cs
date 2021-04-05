@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoApp.Commands.CategoryCommands;
@@ -10,9 +11,11 @@ namespace TodoApp.CommandHandlers.CategoryCommandHandlers
     public class UpdateCategoryCommandHandler : CommandHandler<UpdateCategoryCommand, UpdateCategoryResponse>
     {
         private readonly AppcentTodoContext _context;
-        public UpdateCategoryCommandHandler(AppcentTodoContext context)
+        private readonly IMapper _mapper;
+        public UpdateCategoryCommandHandler(AppcentTodoContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         protected override Task<UpdateCategoryResponse> ProcessCommand(UpdateCategoryCommand command)
         {
@@ -29,6 +32,8 @@ namespace TodoApp.CommandHandlers.CategoryCommandHandlers
 
                 if (result == 0)
                     throw new Exception("An error occured while updating category");
+                else
+                    response.Category = _mapper.Map<Category>(category);
             }
 
             return Task.FromResult(response);
