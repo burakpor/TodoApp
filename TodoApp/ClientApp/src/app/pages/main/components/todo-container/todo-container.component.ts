@@ -1,3 +1,4 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, Input } from '@angular/core';
 import * as _ from 'lodash';
 import { ModalModel } from 'src/app/components/modal/modal.component';
@@ -33,22 +34,22 @@ export class TodoContainerComponent {
 
   constructor(private todoService: TodoService, private applicationManager: ApplicationManager, private modalService: ModalService) { }
 
-  updateStatusNext(todo: Todo) {
-    if (todo.Status == TaskStatus.Todo)
-      todo.Status = TaskStatus.InProgress;
-    else
-      todo.Status = TaskStatus.Completed;
-
+  ngOnInit() {
+    this.applicationManager.todoMoveSubject.subscribe((todo) => {
+      if (this.getTaskStatus() == todo.Status)
+        this.todoList.push(todo);
+    });
+  }
+  updateStatus(todo: Todo) {
+    this.applicationManager.todoMoveSubject.next(todo);
+    _.remove(this.todoList, e => e.TaskId == todo.TaskId);
     this.todoService.updateTodo(todo, this.categoryId).subscribe(res => {
-      if (res.Result.IsSuccess) {
-        this.todoService.getCategory(this.categoryId).subscribe((res) => {
-          if (res.Result.IsSuccess)
-            this.applicationManager.loadTodoSubject.next(res.CategoryObj);
+      if (!res.Result.IsSuccess) {
 
-        })
       }
     });
   }
+
 
   updateStatusPrevious(todo: Todo) {
     if (todo.Status != TaskStatus.Todo) {
@@ -81,9 +82,10 @@ export class TodoContainerComponent {
   openModal() {
     const modal: ModalModel = {
       Component: TodoCreateComponent,
+      HeaderText: "Create New Todo",
       CallBackFunction: (data) => {
 
-        this.todoService.addTodo(data, this.categoryId,this.getTaskStatus()).subscribe(() => {
+        this.todoService.addTodo(data, this.categoryId, this.getTaskStatus()).subscribe(() => {
           this.todoService.getCategory(this.categoryId).subscribe((res) => {
             if (res.Result.IsSuccess)
               this.applicationManager.loadTodoSubject.next(res.CategoryObj);
@@ -95,10 +97,11 @@ export class TodoContainerComponent {
     this.modalService.openModalSubject.next(modal);
   }
 
-  openEditModal(todo: Todo){
+  openEditModal(todo: Todo) {
     const modal: ModalModel = {
       Component: TodoCreateComponent,
       Data: todo.Name,
+      HeaderText: "Update Todo",
       CallBackFunction: (data) => {
         todo.Name = data;
         this.todoService.updateTodo(todo, this.categoryId).subscribe(() => {
@@ -111,5 +114,37 @@ export class TodoContainerComponent {
       }
     }
     this.modalService.openModalSubject.next(modal);
+  }
+  drop(event: CdkDragDrop<string[]>) {
+    console.log(event.distance);
+    const data = event.item.data as Todo;
+    const tempStatus = data.Status;
+
+    if (event.distance.x > 250 && event.distance.x <= 450) {
+      if (data.Status == TaskStatus.Todo)
+        data.Status = TaskStatus.InProgress
+      else if (data.Status == TaskStatus.InProgress)
+        data.Status = TaskStatus.Completed
+    }
+    else if (event.distance.x > 450 && event.distance.x < 700) {
+      if (data.Status == TaskStatus.Todo)
+        data.Status = TaskStatus.Completed
+    }
+    else if (event.distance.x > 450 && event.distance.x < 700) {
+      if (data.Status == TaskStatus.Todo)
+        data.Status = TaskStatus.Completed
+    }
+    else if (event.distance.x < -250 && event.distance.x >= -450) {
+      if (data.Status == TaskStatus.InProgress)
+        data.Status = TaskStatus.Todo
+      else if (data.Status == TaskStatus.Completed)
+        data.Status = TaskStatus.InProgress
+    }
+    else if (event.distance.x < -450 && event.distance.x >= -700) {
+      if (data.Status == TaskStatus.Completed)
+        data.Status = TaskStatus.Todo
+    }
+    if(data.Status != tempStatus)
+      this.updateStatus(data);
   }
 }

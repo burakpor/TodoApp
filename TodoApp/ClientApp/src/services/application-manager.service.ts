@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import { Category } from "src/app/models/models";
+import { Category, Todo } from "src/app/models/models";
 
 
 
@@ -8,4 +8,6 @@ import { Category } from "src/app/models/models";
 export class ApplicationManager {
     searchSubject: Subject<string> = new Subject();
     loadTodoSubject: Subject<Category> = new Subject();
+    sideIconClicked: Subject<any> = new Subject();
+    todoMoveSubject: Subject<Todo> = new Subject();
 }

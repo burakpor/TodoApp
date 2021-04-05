@@ -17,11 +17,13 @@ namespace TodoApp.Helpers
             CreateMap<DeleteTodoDto, DeleteTodoRequest>();
             CreateMap<UpdateTodoDto, UpdateTodoRequest>();
             CreateMap<GetTodoDto, GetTodoRequest>();
+            CreateMap<AcTask, Todo>();
 
             CreateMap<GetCategoryDto, GetCategoryRequest>();
             CreateMap<AddCategoryDto, AddCategoryRequest>();
             CreateMap<DeleteCategoryDto, DeleteCategoryRequest>();
             CreateMap<UpdateCategoryDto, UpdateCategoryRequest>();
+            CreateMap<AcCategory, Category>();
         }
     }
 }

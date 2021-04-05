@@ -4,7 +4,7 @@ namespace TodoApp.Models.BusinessModels
 {
     public class AddCategoryResponse : ResponseBase
     {
-        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
     public class DeleteCategoryResponse : ResponseBase
     {
@@ -25,5 +25,6 @@ namespace TodoApp.Models.BusinessModels
     }
     public class UpdateCategoryResponse : ResponseBase
     {
+        public Category Category { get; set; }
     }
 }

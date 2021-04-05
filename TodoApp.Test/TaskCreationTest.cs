@@ -21,7 +21,7 @@ namespace TodoApp.Test
             {
                 using (var context = new AppcentTodoContext(options))
                 {
-                    var service = new AddTodoCommandHandler(context);
+                    var service = new AddTodoCommandHandler(context, TestHelper.GetMapperInstance());
                     var command = new AddTodoCommand();
                     command.Data = new AddTodoRequest
                     {
@@ -88,7 +88,7 @@ namespace TodoApp.Test
             {
                 using (var context = new AppcentTodoContext(options))
                 {
-                    var service = new UpdateTodoCommandHandler(context);
+                    var service = new UpdateTodoCommandHandler(context, TestHelper.GetMapperInstance());
                     var command = new UpdateTodoCommand();
                     command.Data = new UpdateTodoRequest
                     {
