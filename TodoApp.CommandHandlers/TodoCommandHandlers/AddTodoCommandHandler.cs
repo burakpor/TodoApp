@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -11,9 +12,12 @@ namespace TodoApp.CommandHandlers.TodoCommandHandlers
     public class AddTodoCommandHandler : CommandHandler<AddTodoCommand, AddTodoResponse>
     {
         private readonly AppcentTodoContext _context;
-        public AddTodoCommandHandler(AppcentTodoContext context)
+        private readonly IMapper _mapper;
+
+        public AddTodoCommandHandler(AppcentTodoContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         protected override Task<AddTodoResponse> ProcessCommand(AddTodoCommand command)
         {
@@ -56,7 +60,7 @@ namespace TodoApp.CommandHandlers.TodoCommandHandlers
                         throw new Exception("An error occured while creating task.");
                     }
                 }
-                response.TaskId = entity.TaskId;
+                response.Todo = _mapper.Map<Todo>(entity);
             }
             else
             {

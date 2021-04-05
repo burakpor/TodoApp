@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoApp.Commands.TodoCommands;
@@ -10,9 +11,11 @@ namespace TodoApp.CommandHandlers.TodoCommandHandlers
     public class UpdateTodoCommandHandler : CommandHandler<UpdateTodoCommand, UpdateTodoResponse>
     {
         private readonly AppcentTodoContext _context;
-        public UpdateTodoCommandHandler(AppcentTodoContext context)
+        private readonly IMapper _mapper;
+        public UpdateTodoCommandHandler(AppcentTodoContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         protected override Task<UpdateTodoResponse> ProcessCommand(UpdateTodoCommand command)
         {
@@ -46,6 +49,7 @@ namespace TodoApp.CommandHandlers.TodoCommandHandlers
                             };
                             _context.Add(activity);
                             _context.SaveChanges();
+                            response.Todo = _mapper.Map<Todo>(task);
                             scope.Commit();
                         }
                         catch (Exception ex)
