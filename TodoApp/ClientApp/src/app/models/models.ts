@@ -128,3 +128,8 @@ export interface DeleteCategoryResponse extends ResponseBase {
         RootTaskId?: number;
         TaskPriority: TaskPriority;
     }
+
+    export interface User {
+        FirstName: string;
+        LastName: string;
+    }

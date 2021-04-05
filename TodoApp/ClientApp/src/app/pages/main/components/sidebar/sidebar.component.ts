@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -15,10 +15,22 @@ export class SidebarComponent implements OnInit {
   categoryList: Category[] = [];
   showAddCategory: boolean = false;
   categoryName: string = "";
+  isOpen:boolean = false;
+
+  @HostListener("body:click",['$event.target']) documentClick($event: any) {
+    if($event.tagName != "IMG")
+      this.isOpen = false;
+  }
+
+  @ViewChild("sidebar", {read: ElementRef, static: true}) sidebar: ElementRef;
+
   constructor(private todoService: TodoService, private applicationManager: ApplicationManager) { }
 
   ngOnInit(): void {
     this.getCategories().pipe((take(1))).subscribe(() => {});
+    this.applicationManager.sideIconClicked.subscribe(() => {
+      this.isOpen = !this.isOpen;
+    })
   }
 
   getCategories(): Observable<void> {

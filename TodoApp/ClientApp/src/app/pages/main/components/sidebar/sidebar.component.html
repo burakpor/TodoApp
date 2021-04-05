@@ -1,17 +1,20 @@
-<div class="transform -translate-x-52-5 md:translate-x-0 bg-blue-50" style="width: 200px;height: 1000px;">
+<div #sidebar class="transform top-15 left-0 w-64  bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30 md:translate-x-0"
+class="{{ isOpen ? 'translate-x-0' : '-translate-x-full'}}"
+style="width: 200px;height: 100%; background-color: #fafafa;">
     <div class="justify-center p-5">
-        <div *ngIf="!showAddCategory" (click)="showAddCategory = true" class="flex flex-row" style="cursor: pointer;">
-            <button >Add New Category</button><p class="font-bold ml-3">+</p>
-
+        <div *ngIf="!showAddCategory" (click)="showAddCategory = true" class="flex flex-row items-center" style="cursor: pointer;">
+            <button class="flex-grow text-justify">Project</button>
+            <img style="height: 20px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAMklEQVRIiWNgGGngPxQTDZho5JBRC0YtGEoWMCKxScpAxJpNcx+QCkaLilELRi0YkQAArMYFIENGFBoAAAAASUVORK5CYII="/>
         </div>
         <div *ngIf="showAddCategory" class="add-category flex">
             <input [(ngModel)]="categoryName" class="h-10 px-5 pr-16 text-sm bg-white border-2 border-gray-300 rounded-lg focus:outline-none" style="width: 100%"
             type="name" name="name" placeholder="Name">
-            <button class="save" (click)="saveCategory()">Save</button>
+            <a href="#" (click)="saveCategory()" class="px-4 save py-2 text-sm font-medium text-white bg-gray-900 rounded-md"
+            aria-current="page">Save</a>
         </div>
         <div>
-            <ul class="list-none">
-                <li class="p-5" *ngFor="let category of categoryList"><button (click)="openCategory(category)">{{ category.Name }}</button></li>
+            <ul class="list-inside list-disc">
+                <li (click)="openCategory(category)" class="p-4 text-lg hover:bg-gray-100 cursor-pointer" *ngFor="let category of categoryList">{{ category.Name }}</li>
             </ul>
         </div>
         
