@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { AddCategoryDto, AddCategoryResponse, AddTodoDto, GetCategoryDto, GetCategoryResponse, TaskPriority, TaskStatus, Todo, UpdateTodoDto } from "src/app/models/models";
+import { AddCategoryDto, AddCategoryResponse, AddTodoDto, Category, DeleteCategoryDto, DeleteTodoDto, DeleteTodoResponse, GetCategoryDto, GetCategoryResponse, TaskPriority, TaskStatus, Todo, UpdateCategoryDto, UpdateCategoryResponse, UpdateTodoDto } from "src/app/models/models";
 import { HttpCallService } from "./http-call.service";
 
 @Injectable({ providedIn: "root" })
@@ -29,6 +29,13 @@ export class TodoService {
         return this.http.post<GetCategoryResponse>("Todo", "UpdateTodo", request);
     }
 
+    deleteTodo(todo: Todo){
+        const request: DeleteTodoDto = {
+            TodoId: todo.TaskId
+        }
+        return this.http.post<DeleteTodoResponse>("Todo", "DeleteTodo", request);
+    }
+
     addTodo(todoText: string,categoryId: number, taskStatus: TaskStatus){
         const request: AddTodoDto = {
             CategoryId:categoryId,
@@ -44,5 +51,20 @@ export class TodoService {
             Category: categoryName
         }
         return this.http.post<AddCategoryResponse>("Category", "AddCategory", request);
+    }
+
+    updateCategory(category: Category){
+        const request: UpdateCategoryDto = {
+            CategoryId:category.CategoryId,
+            Name: category.Name
+        }
+        return this.http.post<UpdateCategoryResponse>("Category", "UpdateCategory", request);
+    }
+
+    deleteCategory(category: Category){
+        const request: DeleteCategoryDto = {
+            CategoryId:category.CategoryId
+        }
+        return this.http.post<UpdateCategoryResponse>("Category", "DeleteCategory", request);
     }
 }

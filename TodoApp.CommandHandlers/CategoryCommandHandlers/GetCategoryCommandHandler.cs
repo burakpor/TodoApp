@@ -30,7 +30,7 @@ namespace TodoApp.CommandHandlers.CategoryCommandHandlers
                     {
                         CategoryId = category.CategoryId,
                         Name = category.CategoryName,
-                        TodoList = category.AcTasks.ToList().Select((e) =>
+                        TodoList = category.AcTasks.Where(e => e.IsDeleted == false).Select((e) =>
                         {
                             return new Todo
                             {
@@ -51,7 +51,7 @@ namespace TodoApp.CommandHandlers.CategoryCommandHandlers
                 {
                     CategoryId = category.CategoryId,
                     Name = category.CategoryName,
-                    TodoList = category.AcTasks.ToList().Select(e => new Todo
+                    TodoList = category.AcTasks.Where(e => e.IsDeleted == false).Select(e => new Todo
                     {
                         TaskId = e.TaskId,
                         Name = e.Name,

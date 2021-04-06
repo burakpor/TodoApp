@@ -1,7 +1,6 @@
 .save {
     position: absolute;
-    top: 20px;
-    left: 66%;
+    left: 81%;
     border: solid 1px #efefef;
     border-radius: 0.5rem;
     padding: 5px;
@@ -15,4 +14,19 @@
 ::marker {
     color :rgb(184, 184, 184);
         font-size: 1.5rem;
+}
+
+li {
+    line-height: 1rem;
+}
+
+.more-icon{
+    position: relative;
+    float: right;
+    top: 17px;
+    margin-right: 5px;
+}
+button {
+    border: none;
+    outline: none;
 }
