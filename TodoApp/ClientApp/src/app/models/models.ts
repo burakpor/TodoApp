@@ -33,6 +33,7 @@ export interface DeleteCategoryResponse extends ResponseBase {
         CategoryId: number;
         Name: string;
         TodoList: Todo[];
+        IsDeleted?: boolean;
     }
 
     export interface UpdateCategoryResponse extends ResponseBase {
@@ -73,6 +74,7 @@ export interface DeleteCategoryResponse extends ResponseBase {
         RootTaskId: number;
         TaskPriority: TaskPriority;
         CreateDate: Date | string;
+        IsDeleted?: boolean;
     }
 
     export interface UpdateTodoResponse extends ResponseBase {
@@ -127,4 +129,9 @@ export interface DeleteCategoryResponse extends ResponseBase {
         TaskStatus: TaskStatus;
         RootTaskId?: number;
         TaskPriority: TaskPriority;
+    }
+
+    export interface User {
+        FirstName: string;
+        LastName: string;
     }

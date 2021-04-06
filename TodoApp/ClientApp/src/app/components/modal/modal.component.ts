@@ -11,6 +11,7 @@ export class ModalComponent {
     modalModel: ModalModel;
     callBackFunction: any;
     componentRef: ComponentRef<Modal>;
+    headerText: string;
     constructor(private modalService: ModalService,private cfr: ComponentFactoryResolver,private host: ElementRef<HTMLElement>){}
 
     ngOnInit(){
@@ -22,6 +23,7 @@ export class ModalComponent {
             const componentRef: ComponentRef<Modal> = this.modalTemplate.createComponent(componentFactory);
             this.componentRef = componentRef;
             this.componentRef.instance.Data = val.Data;
+            this.headerText = val.HeaderText;
         })
     }
 
@@ -46,4 +48,5 @@ export interface ModalModel{
     Component: Type<Modal>;
     Data?: any;
     CallBackFunction: Function;
+    HeaderText: string;
 }

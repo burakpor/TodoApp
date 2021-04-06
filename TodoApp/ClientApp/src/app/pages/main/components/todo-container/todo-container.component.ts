@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { MatMenuTrigger } from '@angular/material/menu';
 import * as _ from 'lodash';
 import { ModalModel } from 'src/app/components/modal/modal.component';
 import { TaskStatus, Todo } from 'src/app/models/models';
@@ -28,27 +30,59 @@ export class TodoContainerComponent {
   set categoryId(todoList: number) {
     this._categoryId = todoList;
   }
-
+  editingTodo: number = 0;
   @Input() headerText: string;
 
   constructor(private todoService: TodoService, private applicationManager: ApplicationManager, private modalService: ModalService) { }
 
-  updateStatusNext(todo: Todo) {
-    if (todo.Status == TaskStatus.Todo)
-      todo.Status = TaskStatus.InProgress;
-    else
-      todo.Status = TaskStatus.Completed;
+  ngOnInit() {
+    this.applicationManager.todoMoveSubject.subscribe((todo) => {
+      if (this.getTaskStatus() == todo.Status)
+        this.todoList.push(todo);
+    });
+  }
 
-    this.todoService.updateTodo(todo, this.categoryId).subscribe(res => {
+
+  onEditClick(todo: Todo) {
+    this.editingTodo = todo.TaskId;
+
+    _.defer(() => {
+      const input: HTMLElement = document.getElementById(`input_${todo.TaskId}`);
+      input.focus();
+    })
+  }
+
+  onBlur(event, todo: Todo) {
+    console.log(event);
+    this.editingTodo = 0;
+    if (!_.isNil(event.target) && !_.isEmpty(event.target.value)) {
+      todo.Name = event.target.value;
+    }
+    this.updateTodo(todo);
+  }
+
+  onDeleteClick(todo: Todo) {
+    this.todoService.deleteTodo(todo).subscribe(res => {
       if (res.Result.IsSuccess) {
-        this.todoService.getCategory(this.categoryId).subscribe((res) => {
-          if (res.Result.IsSuccess)
-            this.applicationManager.loadTodoSubject.next(res.CategoryObj);
-
-        })
+        todo.IsDeleted = true;
       }
     });
   }
+
+  updateTodo(todo: Todo) {
+    this.todoService.updateTodo(todo, this.categoryId).subscribe(res => {
+      if (!res.Result.IsSuccess) {
+        
+      }
+    });
+  }
+
+  updateStatus(todo: Todo) {
+    this.applicationManager.todoMoveSubject.next(todo);
+    _.remove(this.todoList, e => e.TaskId == todo.TaskId);
+    this.updateTodo(todo);
+  }
+
 
   updateStatusPrevious(todo: Todo) {
     if (todo.Status != TaskStatus.Todo) {
@@ -81,9 +115,10 @@ export class TodoContainerComponent {
   openModal() {
     const modal: ModalModel = {
       Component: TodoCreateComponent,
+      HeaderText: "Create New Todo",
       CallBackFunction: (data) => {
 
-        this.todoService.addTodo(data, this.categoryId,this.getTaskStatus()).subscribe(() => {
+        this.todoService.addTodo(data, this.categoryId, this.getTaskStatus()).subscribe(() => {
           this.todoService.getCategory(this.categoryId).subscribe((res) => {
             if (res.Result.IsSuccess)
               this.applicationManager.loadTodoSubject.next(res.CategoryObj);
@@ -95,10 +130,11 @@ export class TodoContainerComponent {
     this.modalService.openModalSubject.next(modal);
   }
 
-  openEditModal(todo: Todo){
+  openEditModal(todo: Todo) {
     const modal: ModalModel = {
       Component: TodoCreateComponent,
       Data: todo.Name,
+      HeaderText: "Update Todo",
       CallBackFunction: (data) => {
         todo.Name = data;
         this.todoService.updateTodo(todo, this.categoryId).subscribe(() => {
@@ -111,5 +147,37 @@ export class TodoContainerComponent {
       }
     }
     this.modalService.openModalSubject.next(modal);
+  }
+  drop(event: CdkDragDrop<string[]>) {
+    console.log(event.distance);
+    const data = event.item.data as Todo;
+    const tempStatus = data.Status;
+
+    if (event.distance.x > 250 && event.distance.x <= 450) {
+      if (data.Status == TaskStatus.Todo)
+        data.Status = TaskStatus.InProgress
+      else if (data.Status == TaskStatus.InProgress)
+        data.Status = TaskStatus.Completed
+    }
+    else if (event.distance.x > 450 && event.distance.x < 700) {
+      if (data.Status == TaskStatus.Todo)
+        data.Status = TaskStatus.Completed
+    }
+    else if (event.distance.x > 450 && event.distance.x < 700) {
+      if (data.Status == TaskStatus.Todo)
+        data.Status = TaskStatus.Completed
+    }
+    else if (event.distance.x < -250 && event.distance.x >= -450) {
+      if (data.Status == TaskStatus.InProgress)
+        data.Status = TaskStatus.Todo
+      else if (data.Status == TaskStatus.Completed)
+        data.Status = TaskStatus.InProgress
+    }
+    else if (event.distance.x < -450 && event.distance.x >= -700) {
+      if (data.Status == TaskStatus.Completed)
+        data.Status = TaskStatus.Todo
+    }
+    if (data.Status != tempStatus)
+      this.updateStatus(data);
   }
 }

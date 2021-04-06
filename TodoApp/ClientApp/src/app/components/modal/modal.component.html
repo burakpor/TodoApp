@@ -1,10 +1,10 @@
-<div id="myModal" class="modal">
+<div id="myModal" class="modal pt-16 sm:pt-28">
 
     <!-- Modal content -->
     <div class="modal-content">
         <div class="modal-header flex flex-row">
             <div class="justify-start flex-grow font-bold">
-                Create New Todo
+                {{ headerText }}
             </div>
             <div class="close-button font-bold justify-end">
                 <button (click)="closeModal()">X</button>
