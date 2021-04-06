@@ -15,6 +15,7 @@ namespace TodoApp.Data.Entity
         public AppcentTodoContext(DbContextOptions<AppcentTodoContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public virtual DbSet<AcCategory> AcCategories { get; set; }
