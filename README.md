@@ -24,10 +24,19 @@ ng serve
 ```
 Run TodoApp with IIS Express, Open chrome type http://localhost:4200. You are good to go.
 
+## Creating Release Package
+
+###### Linux
+```
+dotnet publish -c Release -r linux-x64 --output ./PublishFolder TodoApp.csproj 
+```
+
+###### Windows
+Create a folder publish profile then right click TodoApp select Publish then select publish to folder.
+
 ## Deploying with docker container.
 
-Right click TodoApp select Publish then select publish to folder. After publish complete copy Dockerfile into publish folder then open command line terminal, run command
-
+After publish complete copy Dockerfile into publish folder then open command line terminal, run command
 ```
 docker build -t todo-app .
 ```
