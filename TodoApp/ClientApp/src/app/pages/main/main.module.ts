@@ -10,6 +10,8 @@ import { BodyComponent } from './components/body/body.component';
 import { TodoContainerComponent } from './components/todo-container/todo-container.component';
 import { TodoCreateComponent } from './components/todo-create/todo-create.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { MatMenuModule } from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
 const routes: Routes = [
   {
     path: '', component: ContainerComponent
@@ -29,7 +31,9 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     FormsModule,
     CommonModule,
-    DragDropModule
+    DragDropModule,
+    MatMenuModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: []

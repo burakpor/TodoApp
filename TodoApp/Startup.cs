@@ -92,8 +92,16 @@ namespace TodoApp
                 };
             });
 
-            services.AddDbContext<AppcentTodoContext>(options =>
-                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            if (Configuration.GetValue<bool>("UseLocalDB"))
+            {
+                services.AddDbContext<AppcentTodoContext>(options =>
+                      options.UseSqlServer(Configuration.GetConnectionString("LocalConnection")));
+            }
+            else
+            {
+                services.AddDbContext<AppcentTodoContext>(options =>
+                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
 
             services.AddSpaStaticFiles(configuration =>
             {

@@ -31,7 +31,9 @@
     <div class="relative flex items-center justify-between sm:h-16">
 
       <div class="flex justify-start items-center flex-1 md:items-stretch">
-        <img (click)="onSideIconClick()" class="md:hidden" style="height: 25px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAARElEQVRoge3WMQoAIRAEwcH//8qHaSRoKsctQhVsPmzUCQBw6EnGY9fX+PbxM/42qgcAAPAoGV9IxgMAcEfGF5LxALCb4oGLEq8pXZsAAAAASUVORK5CYII="/>
+        <button  class="flex md:hidden"  (click)="onSideIconClick()">
+          <mat-icon>menu</mat-icon>
+        </button>
 
         <div class="text-2xl flex-grow flex items-center ml-2 justify-start">
           <span class="font-bold text-lg md:text-2xl" style="color: white;">Todo App</span>

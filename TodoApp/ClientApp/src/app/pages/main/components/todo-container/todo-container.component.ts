@@ -1,5 +1,6 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { MatMenuTrigger } from '@angular/material/menu';
 import * as _ from 'lodash';
 import { ModalModel } from 'src/app/components/modal/modal.component';
 import { TaskStatus, Todo } from 'src/app/models/models';
@@ -29,7 +30,7 @@ export class TodoContainerComponent {
   set categoryId(todoList: number) {
     this._categoryId = todoList;
   }
-
+  editingTodo: number = 0;
   @Input() headerText: string;
 
   constructor(private todoService: TodoService, private applicationManager: ApplicationManager, private modalService: ModalService) { }
@@ -40,14 +41,46 @@ export class TodoContainerComponent {
         this.todoList.push(todo);
     });
   }
+
+
+  onEditClick(todo: Todo) {
+    this.editingTodo = todo.TaskId;
+
+    _.defer(() => {
+      const input: HTMLElement = document.getElementById(`input_${todo.TaskId}`);
+      input.focus();
+    })
+  }
+
+  onBlur(event, todo: Todo) {
+    console.log(event);
+    this.editingTodo = 0;
+    if (!_.isNil(event.target) && !_.isEmpty(event.target.value)) {
+      todo.Name = event.target.value;
+    }
+    this.updateTodo(todo);
+  }
+
+  onDeleteClick(todo: Todo) {
+    this.todoService.deleteTodo(todo).subscribe(res => {
+      if (res.Result.IsSuccess) {
+        todo.IsDeleted = true;
+      }
+    });
+  }
+
+  updateTodo(todo: Todo) {
+    this.todoService.updateTodo(todo, this.categoryId).subscribe(res => {
+      if (!res.Result.IsSuccess) {
+        
+      }
+    });
+  }
+
   updateStatus(todo: Todo) {
     this.applicationManager.todoMoveSubject.next(todo);
     _.remove(this.todoList, e => e.TaskId == todo.TaskId);
-    this.todoService.updateTodo(todo, this.categoryId).subscribe(res => {
-      if (!res.Result.IsSuccess) {
-
-      }
-    });
+    this.updateTodo(todo);
   }
 
 
@@ -144,7 +177,7 @@ export class TodoContainerComponent {
       if (data.Status == TaskStatus.Completed)
         data.Status = TaskStatus.Todo
     }
-    if(data.Status != tempStatus)
+    if (data.Status != tempStatus)
       this.updateStatus(data);
   }
 }
