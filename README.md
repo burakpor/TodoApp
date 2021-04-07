@@ -51,5 +51,12 @@ You can reach site from
 http://localhost:8080
 ```
 
+## Running Tests
+
+In order to run tests, open TodoApp.Test folder in command line terminal, run following command;
+```
+dotnet test TodoApp.Test.csproj
+```
+
 
 
