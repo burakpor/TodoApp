@@ -17,12 +17,17 @@ To install npm packages. Open ClientApp folder in command line terminal, type
 ```
 npm install
 ```
+In order to start development server, execute following commands;
 
-Start app by open ClientApp folder in command line terminal, execute following command;
+Open command line termine goto ClientApp folder, execute following command;
 ```
 ng serve
 ```
-Run TodoApp with IIS Express, Open chrome type http://localhost:4200.
+After client app starts, open new command line termine goto TodoApp folder, launch backend api by typing
+```
+dotnet run TodoApp.csproj
+```
+You can browse site at http://localhost:5000.
 
 ## Creating Release Package
 
