@@ -13,26 +13,23 @@
 
 ## Development
 
-Install npm packages. Open ClientApp in command line terminal, type
+To install npm packages. Open ClientApp folder in command line terminal, type
 ```
 npm install
 ```
 
-Start app by open ClientApp folder in command line terminal, execute following command
+Start app by open ClientApp folder in command line terminal, execute following command;
 ```
 ng serve
 ```
-Run TodoApp with IIS Express, Open chrome type http://localhost:4200. You are good to go.
+Run TodoApp with IIS Express, Open chrome type http://localhost:4200.
 
 ## Creating Release Package
 
-###### Linux
+Open TodoApp folder in command line terminal, execute following command;
 ```
 dotnet publish -c Release -r linux-x64 --output ./PublishFolder TodoApp.csproj 
 ```
-
-###### Windows
-Create a folder publish profile then right click TodoApp select Publish then select publish to folder.
 
 ## Deploying with docker container.
 
