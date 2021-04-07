@@ -7,7 +7,7 @@
                 {{ headerText }}
             </div>
             <div class="close-button font-bold justify-end">
-                <button (click)="closeModal()">X</button>
+                <button (click)="closeModal()"><mat-icon>close</mat-icon></button>
             </div>
         </div>
         <div class="modal-body">
@@ -15,8 +15,9 @@
         
             </ng-template>
         </div>
-        <div class="modal-buttons">
-            <button (click)="saveClick()">Save</button>
+        <div class="modal-buttons text-center mb-4">
+            <a href="#" (click)="saveClick()" class="px-4 py-2 text-sm font-medium text-white  bg-gray-600  rounded-md"
+            aria-current="page">Save</a>
         </div>
     </div>
   
