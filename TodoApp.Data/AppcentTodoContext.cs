@@ -15,7 +15,18 @@ namespace TodoApp.Data.Entity
         public AppcentTodoContext(DbContextOptions<AppcentTodoContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            if (Database.EnsureCreated())
+            {
+                var context = this;
+                context.AcTaskStatuses.Add(new AcTaskStatus { Status = "Todo" });
+                context.AcTaskStatuses.Add(new AcTaskStatus { Status = "InProgress" });
+                context.AcTaskStatuses.Add(new AcTaskStatus { Status = "Completed" });
+
+                context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P1" });
+                context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P2" });
+                context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P3" });
+                context.SaveChanges();
+            }
         }
 
         public virtual DbSet<AcCategory> AcCategories { get; set; }
