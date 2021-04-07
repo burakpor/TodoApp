@@ -15,9 +15,23 @@ namespace TodoApp.Data.Entity
         public AppcentTodoContext(DbContextOptions<AppcentTodoContext> options)
             : base(options)
         {
-            if (Database.EnsureCreated())
+            var context = this;
+            if (context.Database.EnsureCreated())
             {
-                var context = this;
+                var user = new AcUser
+                {
+
+                    Email = "burak@outlook.com",
+                    FirstName = "Burak",
+                    LastName = "Portakal",
+                    Password = "F8Xk9gxUyv81JZb/CsRS8h0j+yeDYigh+xNNwYWWNfc=",//testtest
+                    UserName = "burak",
+                    Salt = "tOoByYVHjUQ4Ue+SWZPmEQ==",
+                    CreateDate = DateTime.Now
+                };
+                context.AcUsers.Add(user);
+
+
                 context.AcTaskStatuses.Add(new AcTaskStatus { Status = "Todo" });
                 context.AcTaskStatuses.Add(new AcTaskStatus { Status = "InProgress" });
                 context.AcTaskStatuses.Add(new AcTaskStatus { Status = "Completed" });
@@ -25,6 +39,30 @@ namespace TodoApp.Data.Entity
                 context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P1" });
                 context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P2" });
                 context.AcTaskPriorities.Add(new AcTaskPriority { Priority = "P3" });
+
+                context.AcCategories.Add(new AcCategory { CategoryName = "Project", User = user });
+
+                context.AcTasks.Add(new AcTask
+                {
+                    Name = "Test task",
+                    CategoryId = 1,
+                    Status = 1,
+                    TaskPriorityId = 1,
+                    User = user,
+                    IsDeleted = false,
+                    CreateDate = DateTime.Now
+                });
+
+                context.AcTasks.Add(new AcTask
+                {
+                    Name = "Test task 2",
+                    CategoryId = 1,
+                    Status = 1,
+                    TaskPriorityId = 1,
+                    User = user,
+                    IsDeleted = false,
+                    CreateDate = DateTime.Now
+                });
                 context.SaveChanges();
             }
         }
