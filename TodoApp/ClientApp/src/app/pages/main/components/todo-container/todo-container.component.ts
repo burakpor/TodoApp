@@ -3,7 +3,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import * as _ from 'lodash';
 import { ModalModel } from 'src/app/components/modal/modal.component';
-import { TaskStatus, Todo } from 'src/app/models/models';
+import { Category, TaskStatus, Todo } from 'src/app/models/models';
 import { ApplicationManager } from 'src/services/application-manager.service';
 import { ModalService } from 'src/services/modal.service';
 import { TodoService } from 'src/services/todo.service';
@@ -23,13 +23,14 @@ export class TodoContainerComponent {
     this._todoList = todoList;
   }
 
-  private _categoryId: number;
-  @Input() get categoryId(): number {
-    return this._categoryId;
+  private _category: Category;
+  @Input() get category(): Category {
+    return this._category;
   }
-  set categoryId(todoList: number) {
-    this._categoryId = todoList;
+  set category(category: Category) {
+    this._category = category;
   }
+
   editingTodo: number = 0;
   @Input() headerText: string;
 
@@ -70,7 +71,7 @@ export class TodoContainerComponent {
   }
 
   updateTodo(todo: Todo) {
-    this.todoService.updateTodo(todo, this.categoryId).subscribe(res => {
+    this.todoService.updateTodo(todo, this.category.CategoryId).subscribe(res => {
       if (!res.Result.IsSuccess) {
         
       }
@@ -91,9 +92,9 @@ export class TodoContainerComponent {
       else if (todo.Status == TaskStatus.Completed)
         todo.Status = TaskStatus.InProgress;
 
-      this.todoService.updateTodo(todo, this.categoryId).subscribe(res => {
+      this.todoService.updateTodo(todo, this.category.CategoryId).subscribe(res => {
         if (res.Result.IsSuccess) {
-          this.todoService.getCategory(this.categoryId).subscribe((res) => {
+          this.todoService.getCategory(this.category.CategoryId).subscribe((res) => {
             if (res.Result.IsSuccess)
               this.applicationManager.loadTodoSubject.next(res.CategoryObj);
 
@@ -115,11 +116,11 @@ export class TodoContainerComponent {
   openModal() {
     const modal: ModalModel = {
       Component: TodoCreateComponent,
-      HeaderText: "Create New Todo",
+      HeaderText: this.category.Name,
       CallBackFunction: (data) => {
 
-        this.todoService.addTodo(data, this.categoryId, this.getTaskStatus()).subscribe(() => {
-          this.todoService.getCategory(this.categoryId).subscribe((res) => {
+        this.todoService.addTodo(data, this.category.CategoryId, this.getTaskStatus()).subscribe(() => {
+          this.todoService.getCategory(this.category.CategoryId).subscribe((res) => {
             if (res.Result.IsSuccess)
               this.applicationManager.loadTodoSubject.next(res.CategoryObj);
 
@@ -137,8 +138,8 @@ export class TodoContainerComponent {
       HeaderText: "Update Todo",
       CallBackFunction: (data) => {
         todo.Name = data;
-        this.todoService.updateTodo(todo, this.categoryId).subscribe(() => {
-          this.todoService.getCategory(this.categoryId).subscribe((res) => {
+        this.todoService.updateTodo(todo, this.category.CategoryId).subscribe(() => {
+          this.todoService.getCategory(this.category.CategoryId).subscribe((res) => {
             if (res.Result.IsSuccess)
               this.applicationManager.loadTodoSubject.next(res.CategoryObj);
 

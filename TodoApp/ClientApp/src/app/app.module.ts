@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginModule} from './pages/login/login.module';
 import { MainModule } from './pages/main/main.module';
 import { ModalComponent } from './components/modal/modal.component';
+import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +20,8 @@ import { ModalComponent } from './components/modal/modal.component';
     NoopAnimationsModule,
     HttpClientModule,
     LoginModule,
-    MainModule
+    MainModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
