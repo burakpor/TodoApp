@@ -5,11 +5,14 @@
 - Visual studio 2019
 - Nodejs v14+
 - Angular Cli v11+
+- MSSQL Server
 
 ###### Linux
 - dotnet cli version 5.0+
 - Nodejs v14+
 - Angular Cli v11+
+- Docker
+- MSSQL Server running in docker container
 
 ## Development
 
@@ -28,6 +31,22 @@ After client app starts, open new command line termine goto TodoApp folder, laun
 dotnet run TodoApp.csproj
 ```
 You can browse site at http://localhost:5000.
+
+If you use linux environment you need to run mssql server in docker container and set the LocalConnection variable in appsettings.development.json file.
+
+Run following command to initilize mssql server in docker container;
+
+```
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=myPass123" -p 1433:1433 --name todoDb -d mcr.microsoft.com/mssql/server:2017-latest
+```
+
+After MSSQL server starts set LocalConnection variable as
+
+```
+Data Source=localhost,1433;Initial Catalog=AppcentTodo;Persist Security Info=True;User Id=sa;Password=myPass123;MultipleActiveResultSets=True
+```
+
+Now, as you open http://localhost:5000 TodoApp Api will create database and you can start developing application.
 
 ## Creating Release Package
 
